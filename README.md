@@ -10,7 +10,12 @@
 
 * Base functionality is coming along reasonably well. I would like to get some nicer sample templates done as well as provide more sample material.
 * Lots of back and forth on some of the finer points of the YAML schema. I'd like to wrap this up ASAP and tweak later.
-* The name sucks. I'm leaving it as is so it's a persistent reminder to find real name.
+
+# Installation
+
+## Prerequisites
+
+* PyYaml
 
 ## Content Guide
 
