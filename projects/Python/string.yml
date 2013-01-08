@@ -1,0 +1,12 @@
+section: string
+url: http://docs.python.org/2/library/stdtypes.html#str.$(entry)
+entries:
+    - [ capitalize, Return a copy of the string with its first character capitalized and the rest lowercased. ]
+    - [ center, Return centered in a string of length width. Padding is done using the specified fillchar (default is a space). ]
+---
+section: string_constants
+url: http://docs.python.org/2/library/stdtypes.html#str.$(entry)
+entries:
+    - [ ascii_uppercase, String of characters A-Z. ]
+    - [ digits, String of characters 0-9. ]
+

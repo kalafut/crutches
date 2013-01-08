@@ -1,0 +1,4 @@
+section: re
+url: http://docs.python.org/2/library/re.html#re.{entry}
+entries:
+    - [ sub, "Return the string obtained by replacing the leftmost non-overlapping occurrences of pattern in string by the replacement repl." ]

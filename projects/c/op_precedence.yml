@@ -1,0 +1,67 @@
+section: Operator precedence
+url: https://docs.djangoproject.com/en/1.4/ref/models/fields/#django.db.models.{entry}
+sort: fixed
+entries:
+    - 
+      - |
+        <pre>
+          Operator           Description                          Associativity
+        1   ::               Scope resolution                     Left-to-right
+        2   ++               Suffix increment
+            --               Suffix decrement
+            ()               Function call
+            []               Array subscripting
+            .                Element selection by reference
+            ->               Element selection through pointer
+            typeid()         Run-time type information
+            const_cast
+            dynamic_cast
+            reinterpret_cast
+            static_cast
+        3   ++                Prefix increment                    Right-to-left
+            --                Prefix decrement
+            +                 Unary plus
+            -                 Unary minus
+            !                 Logical NOT
+            ~                 Bitwise NOT
+            (type)            Type cast
+            *                 Indirection (dereference)
+            &                 Address-of
+            sizeof            Size-of
+            new, new[]        Dynamic memory allocation
+            delete, delete[]  Dynamic memory deallocation
+        4   .*                Pointer to member (C++ only)        Left-to-right
+            ->*               Pointer to member (C++ only)
+        5   *                 Multiplication
+            /                 Division
+            %                 Modulo (remainder)
+        6   +                 Addition
+            -                 Subtraction
+        7   <<                Bitwise left shift
+            >>                Bitwise right shift
+        8   <                 Less than
+            <=                Less than or equal to
+            >                 Greater than
+            >=                Greater than or equal to
+        9   ==                Equal to
+            !=                Not equal to
+        10  &                 Bitwise AND
+        11  ^                 Bitwise XOR (exclusive or)
+        12  |                 Bitwise OR (inclusive or)
+        13  &&                Logical AND
+        14  ||                Logical OR
+        15  ?:                Ternary conditional                 Right-to-left
+            =                 Direct assignment
+            +=                Assignment by sum
+            -=                Assignment by difference
+            *=                Assignment by product
+            /=                Assignment by quotient
+            %=                Assignment by remainder
+            <<=               Assignment by bitwise left shift
+            >>=               Assignment by bitwise right shift
+            &=                Assignment by bitwise AND
+            ^=                Assignment by bitwise XOR
+            |=                Assignment by bitwise OR
+        16  throw             Throw operator (C++ only)
+        17  ,                 Comma                               Left-to-right
+        </pre>

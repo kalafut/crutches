@@ -1,0 +1,5 @@
+section: shutil
+url: http://docs.python.org/2/library/shutil.html#shutil.{entry}
+entries:
+    - [ copyfileobj, "Copy the contents of the file-like object fsrc to the file-like object fdst." ]
+    - [ copyfile, Copy the contents (no metadata) of the file named src to a file named dst. ]

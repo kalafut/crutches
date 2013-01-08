@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="default.css">
+    <script src="zepto.min.js"></script>
+    <script src="handlebars.min.js"></script>
+    <script src="crutch.js"></script>
+    <script src="tabular.js"></script>
+</head>
+    <body>
+        <div id="sidebar">
+            <input id="search" type="text"/>
+            {{#each projects}}
+            <br><input class="project_active" type="checkbox" data-uid="{{this.uid}}" checked="checked" />{{this.project}}
+            {{/each}}
+            <br><br>
+            <a id="prj_all" href="#">All</a> <a id="prj_none" href="#">None</a>
+        </div>
+        <div id="main">
+            {{#each projects}} <h1 class="project" id="{{this.uid}}">{{this.project}}</h1>
+                {{#if this.description}}
+                   {{this.description}}
+                {{/if}}
+                {{#each sections}}<h3 class="section" id="{{this.uid}}"> {{this.section}}</h3>
+                {{#if this.description}}
+                   {{this.description}}
+                {{/if}}
+                <table>
+                    {{#each entries}}
+                    <tr class="entry" id="{{this.uid}}">
+                        {{#if this.term}}
+                        <td>
+                            {{#if this.entry_url }}
+                            <a href="{{this.entry_url}}" target="detail_pg">{{{this.term}}}</a>
+                            {{else}}
+                            {{{this.term}}}
+                            {{/if}}
+                        </td>
+                        {{/if}}
+                        <td>{{{this.description}}}</td>
+                    </tr>
+                    {{/each}}
+                </table>
+
+                {{/each}}
+            {{/each}}
+        </div>
+
+    </body>
+</html>
+

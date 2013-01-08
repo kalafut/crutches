@@ -1,0 +1,22 @@
+.hidden { display: none; }
+h1 { color: #eee; background-color: green; }
+body { font-family: sans-serif; background-color: #eeeeee; }
+
+table
+{
+border-collapse:collapse;
+}
+table, th, td
+{
+border: 1px solid black;
+}
+td
+{
+padding: 0.4em;
+}
+
+a:link {color:blue;}      /* unvisited link */
+a:visited {color:blue;}  /* visited link */
+
+#sidebar { float:left; }
+#main { overflow:auto; }

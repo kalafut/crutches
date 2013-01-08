@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="default.css">
+    <script src="zepto.min.js"></script>
+    <script src="mustache.min.js"></script>
+</head>
+    <body>
+    <input id="search" type="text"/>
+
+    {{ #projects }} <br><input class="project_active" type="checkbox" data-uid="{{ uid }}" checked="checked" />{{ project}} {{ /projects }}
+
+    {{ #projects }} <h1 class="project" id="{{ uid }}"> {{ project}}</h1>
+
+        {{ #sections }}<h2 class="section" id="{{ uid }}"> {{section}} </h2>
+        <ul>
+            {{ #entries }}
+            <li class="entry" id="{{ uid }}">
+            {{ #entry_url }}
+            <a href="{{ entry_url }}"><pre>{{ term }}</pre></a>
+            {{ /entry_url }}
+            {{ ^entry_url }}
+            <pre>{{ term }}</pre>
+            {{ /entry_url }}
+
+            - <pre>{{ description }}</pre> <br></li>
+            {{ /entries }}
+        </ul>
+
+        {{ /sections }}
+    {{ /projects }}
+
+<script src="crutch.js"></script>
+    </body>
+</html>
+

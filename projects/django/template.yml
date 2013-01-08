@@ -1,0 +1,6 @@
+section: django.db.models
+url: https://docs.djangoproject.com/en/1.4/ref/templates/builtins/#{entry}
+sort: fixed
+entries:
+    - [ autoescape, "Takes either on or off as an argument and that determines whether auto-escaping is in effect inside the block." ]
+    - [ ">=", "Greater than or equal to.", { url: "https://docs.djangoproject.com/en/1.4/ref/templates/builtins/#id5" } ]

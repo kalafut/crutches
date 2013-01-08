@@ -1,0 +1,13 @@
+section: Summary
+url: http://daringfireball.net/projects/markdown/syntax
+sort: fixed
+entries:
+    - [ sample, "Sample description" ]
+    - ['*text* / _text_',        Emphasis; italicized text]
+    - ['**text** / **text**',    Strong emphasis; bolt text]
+    - ['`code`',                 Inline code (monospace font)]
+    - ['* text',                 Bulleted list. Indent/nest as needed]
+    - [1. text,                  Enumerated list]
+    - ['# text',                 Level 1 heading]
+    - ['## text',                Level 2 heading]
+    - ['[text](http://x.y.com)', Hyperlink]

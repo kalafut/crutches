@@ -1,0 +1,5 @@
+section: random
+url: http://docs.python.org/2/library/random.html#random.{entry}
+sort: fixed
+entries:
+    - [ "randint (a,b)", Return a random integer N such that a <= N <= b. ]

@@ -1,0 +1,6 @@
+section: urllib2
+entries:
+  - [ urlopen, "Open the URL url, which can be either a string or a Request object." ]
+  - [ install_opener, Install an OpenerDirector instance as the default global opener. ]
+  - [ HTTPPasswordMgr.add_password, "Causes (user, passwd) to be used as authentication tokens when authentication for realm." ]
+  - [ HTTPPasswordMgr.find_user_password, "Get user/password for given realm and URI, if any." ]
