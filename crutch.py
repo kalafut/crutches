@@ -33,13 +33,22 @@ def combine_files(files, directory):
             combined += f.read()
     return combined
 
+def s(match):
+    fn = match.groups()[0]
+    with open(join(ASSET_DIR, fn), 'r') as f:
+        contents = f.read()
+    return "<script>{contents}</script>".format(contents=contents)    
+
 def parse_template(name, data):
     with open(join(TEMPLATE_DIR, name), "r") as f:
         orig = f.read()
 
     # TODO This is not preserving inline Javascript
     # Find included javascript, combine them, and remove original tags
-    regex = re.compile(r"<\s*script.*?src\s*=\s*\"\s*(.*?)\s*\"\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
+    regex = re.compile(r"<\s*script.*?src\s*=\s*\"\s*(.*?)\s*\"\s*>.*?</script>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
+    orig = re.sub(regex, s, orig)
+    print orig
+
     scripts = regex.findall(orig)
     combined_js = combine_files(scripts, ASSET_DIR)
     orig = re.sub(re.compile(r"<\s*?script.*?/script>",re.IGNORECASE|re.MULTILINE|re.DOTALL),"", orig)
