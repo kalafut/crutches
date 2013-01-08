@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+from bs4 import BeautifulSoup
 import json
 import os
 import os.path
@@ -26,61 +27,71 @@ def parse_module(file, project, db):
     with open(file, "r") as input:
         module = yaml.load(input)
 
-def combine_files(files, directory):
+def combine(sources, directory):
     combined = ""
-    for f in files:
-        with open(join(directory, f), 'r') as f:
-            combined += f.read()
+    for s in sources:
+        if "src" in s:
+            with open(join(directory, s["src"]), 'r') as f:
+                combined += f.read()
+        else:
+            combined += s["text"]
+
     return combined
 
 def parse_template(name, data):
     with open(join(TEMPLATE_DIR, name), "r") as f:
-        orig = f.read()
+        soup = BeautifulSoup(f)
 
-    # TODO This is not preserving inline Javascript
     # Find included javascript, combine them, and remove original tags
-    regex = re.compile(r"<\s*script.*?src\s*=\s*\"\s*(.*?)\s*\"\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    scripts = regex.findall(orig)
-    combined_js = combine_files(scripts, ASSET_DIR)
-    orig = re.sub(re.compile(r"<\s*?script.*?/script>",re.IGNORECASE|re.MULTILINE|re.DOTALL),"", orig)
+    scripts = soup.find_all("script")
+
+    combine_queue = []
+    for script in scripts:
+        if script.has_key("src"):
+            combine_queue.append({"src": script["src"]})
+        else:
+            combine_queue.append({"text": script.string})
+        script.extract()
+
+    combined_js = combine(combine_queue, ASSET_DIR)
 
     # TODO is this really on on <head>??
     # Find included css (in <head> only), combine them, and remove original tags
-    regex = re.compile("<\s*link.*?rel\s*?=\s*?\"\s*?stylesheet\s*?\".*?href\s*=\s*\"\s*(.*?)\s*\"\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    stylesheets = regex.findall(orig)
-    combined_css = combine_files(stylesheets, ASSET_DIR)
-    orig = re.sub(r"<\s*link.*?rel\s*?=\s*?\"\s*?stylesheet.*?>","", orig)
+    combine_queue = []
+    css = soup.find_all(name=["link", "style"])
+    for match in css:
+        if match.name=="link" and match.has_key("href"):
+            combine_queue.append({"src": match["href"]})
+        else:
+            combine_queue.append({"text": match.string})
+        match.extract()
 
+    combined_css = combine(combine_queue , ASSET_DIR)
 
     # Extract section
-    regex = re.compile(r"(.*)</head>.*?<\s*body\s*>(.*)<\s*/body\s*>(.*)",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    m = regex.match(orig)
-    header, template, footer = m.groups()[0:3]
+    body = soup.find("body").contents
+    template = ""
+    for x in body:
+        template += str(x)
+
     template = re.sub(r"[\n\r]","", template)
     template = re.sub(r"([\\\"\'])", r"\\\1", template)
     templ_string = "'%s'" % template
 
-
-    new_templ = """{header}
-    <style type="text/css">{css_assets}</style>
-    </head>
-    <body>
+    head = soup.find("head")
+    head.append("<style>" + combined_css + "</style>")
+    soup.find("body").replace_with("""
     <script>
     {js_assets}
     _template = {template};
     _data = {data};
     </script>
-    </body>
-    {footer}
     """.format(
-        header = header,
-        css_assets = combined_css,
         js_assets = combined_js,
         template = templ_string,
-        data = json.dumps(data),
-        footer = footer)
+        data = json.dumps(data)))
 
-    return new_templ
+    return str(soup)
 
     with open("templates/template.html", "r") as f:
         body_tmpl = re.sub(r"[\n\r]","", f.read())
