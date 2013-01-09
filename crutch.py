@@ -105,8 +105,8 @@ def prepare_entry_url(entry, section_url):
     return url
 
 def generate():
-    project_dir = raw_input("Project directory: ")
-    section_file = raw_input("Section filename: ")
+    project_dir = input("Project directory: ")
+    section_file = input("Section filename: ")
     path = join(PROJECTS_DIR, project_dir)
     if os.path.exists(join(path, section_file)):
         exit("Error: %s already exists" % section_file)
@@ -122,7 +122,7 @@ sort: fixed
 entries:
     - [ sample, "Sample description" ]
 """)
-        print "\n" + join(path, section_file) + " created."
+        print("\n" + join(path, section_file) + " created.")
 
 def load_projects(path):
     db= { 'projects': [] }
@@ -144,10 +144,10 @@ def load_projects(path):
                         if not content["section"] in prj:
                             prj['sections'].append(content)
                         else:
-                            print "Error: duplicate section"
+                            print("Error: duplicate section")
                             exit()
                     else:
-                        print "%s: missing 'section:' declaration" % section
+                        print("%s: missing 'section:' declaration" % section)
 
                     if "url" in content:
                         section_url = content["url"]
@@ -191,7 +191,7 @@ def yamlize(txt):
         for line in yaml_lines:
             p = line.partition(", ")
 
-            print "    - " + p[0] + p[1] + (" " * (align - len(p[0]))) + p[2]
+            print("    - " + p[0] + p[1] + (" " * (align - len(p[0]))) + p[2])
 
 
 #
@@ -244,9 +244,9 @@ if args.yamlize:
     yamlize(args.yamlize)
     exit();
 elif args.stress:
-    print "Generating random projects"
+    print("Generating random projects")
     stress_test(6, 15, 20)
-    print "done"
+    print("done")
     exit()
 
 
