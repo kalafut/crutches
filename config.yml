@@ -1,9 +1,10 @@
 main:
-    include:
-    exclude:
+    include: [ ]
+    exclude: [ .#re ]
     template: tabular
 
 bootstrap:
     include:
     exclude:
     template: bootstrap
+

@@ -43,12 +43,11 @@ def parse_template(name, data):
     with open(join(TEMPLATE_DIR, name), "r") as f:
         orig = f.read()
 
-    # TODO This is not preserving inline Javascript
-    # Find included javascript, combine them, and remove original tags
+    # Find external Javascript and load the contents
     regex = re.compile(r"<\s*script.*?src\s*=\s*\"\s*(.*?)\s*\"\s*>.*?</script>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
     orig = re.sub(regex, lambda x: "<script>{contents}</script>".format(contents=open(join(ASSET_DIR, x.groups()[0])).read()), orig)
 
-    # Find included css (in <head> only), combine them, and remove original tags
+    # Find external CSS and load the contents
     regex = re.compile("<\s*link.*?href\s*=\s*\"\s*(.*?)\s*\"\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
     orig = re.sub(regex, lambda x: "<style>{contents}</style>".format(contents=open(join(ASSET_DIR, x.groups()[0])).read()), orig)
 
@@ -63,15 +62,6 @@ def parse_template(name, data):
     new_templ = orig.replace("<body>","<script>_template='{template}';_data={data};</script><body>".format(template=template, data=json.dumps(data)), 1)
 
     return new_templ
-
-    with open("templates/template.html", "r") as f:
-        body_tmpl = re.sub(r"[\n\r]","", f.read())
-
-    # html = base_tmpl.format(
-    #     jsbundle = package_assets(),
-    #     data=json.dumps(db),
-    #     template=re.sub(r"([\\\"\'])", r"\\\1", body_tmpl)
-    #     )
 
 def mini_markdown(raw):
     em = re.compile(r"([_*])(.+?)\1", re.MULTILINE|re.DOTALL)
@@ -124,7 +114,35 @@ entries:
 """)
         print("\n" + join(path, section_file) + " created.")
 
-def load_projects(path):
+def sections_matches(project, section, config):
+    # Make a fully qualified section name
+    fq_section = "{project}#{section}".format(project=project, section=section["section"])
+
+    matched = False
+
+    if config["include"]:
+        for include in config["include"]:
+            # TODO  Compile these things once!
+            if re.search(re.compile(include), fq_section):
+                matched = True
+                break;
+    else:
+        # No include implies everything matches
+        matched = True
+
+    if matched and config["exclude"]:
+        for exclude in config["exclude"]:
+            # TODO  Compile these things once!
+            if re.search(re.compile(exclude), fq_section):
+                matched = False
+                break;
+
+    return matched
+
+def validate_section(section):
+    pass
+
+def load_projects(path, config):
     db= { 'projects': [] }
 
     projects = [ name for name in os.listdir(path) if os.path.isdir(join(path, name)) and os.path.exists(join(path,name,"_project.yml")) ]
@@ -133,46 +151,50 @@ def load_projects(path):
         with open(join(path, project, "_project.yml")) as f:
             prj_cfg = yaml.load(f)
             prj = { 'project':prj_cfg["project"],  'sections': [], 'uid': next_uid() }
-            db["projects"].append(prj)
 
         for infile in [ name for name in os.listdir(join(path, project)) if os.path.splitext(name)[1] == ".yml" and not name == "_project.yml" ]:
             with open(join(path, project, infile), "r") as doc:
                 for content in yaml.load_all(doc):
                     content['uid'] = next_uid()
 
-                    if "section" in content:
-                        if not content["section"] in prj:
-                            prj['sections'].append(content)
+                    if "section" not in content:
+                        exit("%s: missing 'section:' declaration" % infile)
+
+                    if content["section"] in prj:
+                        exit("Error: duplicate section: %s" % infile)
+
+
+                    if sections_matches(prj["project"], content, config):
+                        prj['sections'].append(content)
+
+                        if "url" in content:
+                            section_url = content["url"]
                         else:
-                            print("Error: duplicate section")
-                            exit()
-                    else:
-                        print("%s: missing 'section:' declaration" % section)
+                            section_url = None
 
-                    if "url" in content:
-                        section_url = content["url"]
-                    else:
-                        section_url = None
+                        # convert terse entry list into dictionary and add an ID
+                        entry_array = []
+                        for entry in content['entries']:
+                            if len(entry) > 3 or (len(entry) == 3 and not type(entry[2]) == dict):
+                                exit("Invalid entry declaration in %s/%s: " % (project, content["section"])  + repr(entry))
 
-                    # convert terse entry list into dictionary and add an ID
-                    entry_array = []
-                    for entry in content['entries']:
-                        if len(entry) > 3 or (len(entry) == 3 and not type(entry[2]) == dict):
-                            exit("Invalid entry declaration in %s/%s: " % (project, content["section"])  + repr(entry))
+                            #TODO this is not correctly handling just a description plus options
+                            if len(entry) == 1:
+                                new_entry = { "description": entry[0], "uid": next_uid() }
+                            elif len(entry) >= 2:
+                                new_entry = { "term": entry[0], "description": entry[1], "uid": next_uid() }
 
-                        #TODO this is not correctly handling just a description plus options
-                        if len(entry) == 1:
-                            new_entry = { "description": entry[0], "uid": next_uid() }
-                        elif len(entry) >= 2:
-                            new_entry = { "term": entry[0], "description": entry[1], "uid": next_uid() }
+                            if len(entry) > ENTRY_OPT:
+                                new_entry["options"] = entry[ENTRY_OPT]
+                            else:
+                                new_entry["options"] = {}
+                            new_entry['entry_url'] = prepare_entry_url(new_entry, section_url)
+                            entry_array.append(new_entry)
+                        content["entries"] = entry_array
 
-                        if len(entry) > ENTRY_OPT:
-                            new_entry["options"] = entry[ENTRY_OPT]
-                        else:
-                            new_entry["options"] = {}
-                        new_entry['entry_url'] = prepare_entry_url(new_entry, section_url)
-                        entry_array.append(new_entry)
-                    content["entries"] = entry_array
+        # if no sections matched, don't add the project
+        if len(prj["sections"]) > 0:
+            db["projects"].append(prj)
 
     #print json.dumps(db, sort_keys = 4, indent = 2)
     return db
@@ -229,32 +251,35 @@ def stress_test(projects, sections, entries):
             random_section(p, entries)
 
 
-parser = argparse.ArgumentParser(description='Generate parse project files into a single-file reference.')
-parser.add_argument('-c', '--config', dest='config', action='store', default='main', help='Select a configuration from config.yml [default: main]')
-parser.add_argument('-g', '--generate', dest='generate', action='store_true', help='Generate a boilerplate project/section')
-parser.add_argument('-y', '--yamlize', dest='yamlize', action='store', metavar='FILE', help='Create an entries section from FILE')
-parser.add_argument('--stress', dest='stress', action='store_true', help='Stress test')
-args = parser.parse_args()
+def main():
+    parser = argparse.ArgumentParser(description='Generate parse project files into a single-file reference.')
+    parser.add_argument('-c', '--config', dest='config', action='store', default='main', help='Select a configuration from config.yml [default: main]')
+    parser.add_argument('-g', '--generate', dest='generate', action='store_true', help='Generate a boilerplate project/section')
+    parser.add_argument('-y', '--yamlize', dest='yamlize', action='store', metavar='FILE', help='Create an entries section from FILE')
+    parser.add_argument('--stress', dest='stress', action='store_true', help='Stress test')
+    args = parser.parse_args()
 
-if args.generate:
-    generate()
-    exit();
+    if args.generate:
+        generate()
+        exit();
 
-if args.yamlize:
-    yamlize(args.yamlize)
-    exit();
-elif args.stress:
-    print("Generating random projects")
-    stress_test(6, 15, 20)
-    print("done")
-    exit()
+    if args.yamlize:
+        yamlize(args.yamlize)
+        exit();
+    elif args.stress:
+        print("Generating random projects")
+        stress_test(6, 15, 20)
+        print("done")
+        exit()
+
+    config = load_config(args.config)
+
+    db = load_projects("projects", config)
+    html = parse_template(config['template'] + ".html", db)
+
+    with open("index.html", "w") as out:
+        out.write(html)
 
 
-config = load_config(args.config)
-
-db = load_projects("projects")
-html = parse_template(config['template'] + ".html", db)
-
-with open("index.html", "w") as out:
-    out.write(html)
-
+if __name__ == "__main__":
+    main()

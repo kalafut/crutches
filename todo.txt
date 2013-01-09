@@ -33,3 +33,6 @@ Make regex search options (and not default). It's annoying at times.
 Unicode
 Python 3
 Ignore markdown in preformatted tags
+Deal with config at a module level
+Clean up mish-mash of prj/project/projects etc. prj["project"]??? Ugly
+Maybe reconsider "#" as a separate since it starts YAML comments.

@@ -2,3 +2,4 @@ section: re
 url: http://docs.python.org/2/library/re.html#re.{entry}
 entries:
     - [ sub, "Return the string obtained by replacing the leftmost non-overlapping occurrences of pattern in string by the replacement repl." ]
+    - [ "search(pattern, string, flags=0)", "Scan through string looking for a location where the regular expression pattern produces a match, and return a corresponding MatchObject instance." ]
