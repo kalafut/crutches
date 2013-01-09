@@ -5,7 +5,18 @@
     <script src="zepto.min.js"></script>
     <script src="handlebars.min.js"></script>
     <script src="crutch.js"></script>
-    <script src="tabular.js"></script>
+    <script>    $(document).ready(function() {
+    $("#prj_all").on("click", function() {
+        $(".project_active").prop("checked",true);
+        Crutch.filter();
+    });
+    $("#prj_none").on("click", function() {
+        $(".project_active").prop("checked",false);
+        Crutch.filter();
+        });
+    });
+    </script>
+
 </head>
     <body>
         <div id="sidebar">

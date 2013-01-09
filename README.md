@@ -1,8 +1,8 @@
-# Crutch
+# Crutches
 
 ## Goals
 
-* Create/collect useful developer reference material and make it available under a permissive license.
+* Create useful developer reference material and make it available under a permissive license.
 * Develop conventions that allow people to easily contribute to the library.
 * Provide a tool to combine select material into a searchable, single-file reference document.
 
@@ -19,8 +19,8 @@
 
 ## Configuration
 
-* YAML references (&/\*) to will be flatted in include/exclude sections to simplify files groups.
-* Include spec:  ^Python#shutil
+* YAML references (& and \*)  will be flatted in include/exclude sections to simplify files groups.
+* Include spec:  ^Python/shutil
 
 ## Content Guide
 

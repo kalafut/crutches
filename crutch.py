@@ -33,7 +33,7 @@ def combine_files(files, directory):
             combined += f.read()
     return combined
 
-def s(match):
+def replace_tag(match):
     fn = match.groups()[0]
     with open(join(ASSET_DIR, fn), 'r') as f:
         contents = f.read()
@@ -46,48 +46,21 @@ def parse_template(name, data):
     # TODO This is not preserving inline Javascript
     # Find included javascript, combine them, and remove original tags
     regex = re.compile(r"<\s*script.*?src\s*=\s*\"\s*(.*?)\s*\"\s*>.*?</script>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    orig = re.sub(regex, s, orig)
-    print orig
+    orig = re.sub(regex, lambda x: "<script>{contents}</script>".format(contents=open(join(ASSET_DIR, x.groups()[0])).read()), orig)
 
-    scripts = regex.findall(orig)
-    combined_js = combine_files(scripts, ASSET_DIR)
-    orig = re.sub(re.compile(r"<\s*?script.*?/script>",re.IGNORECASE|re.MULTILINE|re.DOTALL),"", orig)
-
-    # TODO is this really on on <head>??
     # Find included css (in <head> only), combine them, and remove original tags
-    regex = re.compile("<\s*link.*?rel\s*?=\s*?\"\s*?stylesheet\s*?\".*?href\s*=\s*\"\s*(.*?)\s*\"\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    stylesheets = regex.findall(orig)
-    combined_css = combine_files(stylesheets, ASSET_DIR)
-    orig = re.sub(r"<\s*link.*?rel\s*?=\s*?\"\s*?stylesheet.*?>","", orig)
+    regex = re.compile("<\s*link.*?href\s*=\s*\"\s*(.*?)\s*\"\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
+    orig = re.sub(regex, lambda x: "<style>{contents}</style>".format(contents=open(join(ASSET_DIR, x.groups()[0])).read()), orig)
 
-
-    # Extract section
-    regex = re.compile(r"(.*)</head>.*?<\s*body\s*>(.*)<\s*/body\s*>(.*)",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    m = regex.match(orig)
-    header, template, footer = m.groups()[0:3]
+    # Extract template
+    regex = re.compile(r"<\s*body\s*>(.*)<\s*/body\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
+    m = regex.search(orig)
+    template = m.groups()[0]
     template = re.sub(r"[\n\r]","", template)
     template = re.sub(r"([\\\"\'])", r"\\\1", template)
-    templ_string = "'%s'" % template
+    orig = re.sub(regex, "<body></body>", orig)
 
-
-    new_templ = """{header}
-    <style type="text/css">{css_assets}</style>
-    </head>
-    <body>
-    <script>
-    {js_assets}
-    _template = {template};
-    _data = {data};
-    </script>
-    </body>
-    {footer}
-    """.format(
-        header = header,
-        css_assets = combined_css,
-        js_assets = combined_js,
-        template = templ_string,
-        data = json.dumps(data),
-        footer = footer)
+    new_templ = orig.replace("<body>","<script>_template='{template}';_data={data};</script><body>".format(template=template, data=json.dumps(data)), 1)
 
     return new_templ
 

@@ -1,10 +1,10 @@
 $(document).ready(function() {
     $("#prj_all").on("click", function() {
         $(".project_active").prop("checked",true);
-        Ragbag.filter();
+        Crutch.filter();
     });
     $("#prj_none").on("click", function() {
         $(".project_active").prop("checked",false);
-        Ragbag.filter();
+        Crutch.filter();
     });
 });
