@@ -1,0 +1,16 @@
+section: marks
+url: http://example.com/{entry}
+sort: fixed
+credits: http://www.fprintf.net/vimCheatSheet.html
+entries:
+    - [ sample, "Sample description" ]
+    - ['m{a-zA-Z}',               'Set mark {a-zA-Z} at cursor position (does not move the cursor, this is not a motion command).']
+    - [m' or m`,                  'Set the previous context mark. This can be jumped to with the "''''" or "``" command (does not move the cursor, this is not a motion command).']
+    - [':[range]ma[rk] {a-zA-Z}', 'Set mark {a-zA-Z} at last line number in [range], column 0. Default is cursor line.']
+    - [':[range]k{a-zA-Z}',       'Same as :mark, but the space before the mark name can be omitted.']
+    - ['''{a-z}',                 'To the first non-blank character on the line with mark {a-z} (linewise).']
+    - ['''{A-Z0-9}',              'To the first non-blank character on the line with mark {A-Z0-9} in the correct file']
+    - ['`{a-z}',                  'To the mark {a-z}']
+    - ['`{A-Z0-9}',               'To the mark {A-Z0-9} in the correct file']
+    - [':marks',                  List all the current marks (not a motion command).]
+    - [':marks {arg}',            'List the marks that are mentioned in {arg} (not a motion command).']
