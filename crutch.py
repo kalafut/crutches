@@ -103,24 +103,32 @@ def prepare_entry_url(entry, section_url):
     return url
 
 def generate():
-    project_dir = get_input("Project directory: ")
-    section_file = get_input("Section filename: ")
+    project_dir = get_input("Project: ")
+    section_file = get_input("Section: ")
     path = join(PROJECTS_DIR, project_dir)
     if os.path.exists(join(path, section_file)):
         exit("Error: %s already exists" % section_file)
 
     if not os.path.exists(path):
         os.mkdir(path)
+        with open(join(path, "_project.yml"), "w") as f:
+            boilerplate = """\
+                project: {project}
+                description:
+                url:
+                """.format(project=project_dir)
+            f.write(dedent(boilerplate))
 
-    with open(join(path, section_file), "w") as f:
+    with open(join(path, section_file + ".yml"), "w") as f:
         boilerplate = """\
-            section: <section_name>
-            url: http://example.com/{entry}
+            section: {section}
+            url: http://example.com/{{entry}}
             sort: fixed
             entries:
                 - [ sample, "Sample description" ]
-            """
+            """.format(section=section_file)
         f.write(dedent(boilerplate))
+
         print("\n" + join(path, section_file) + " created.")
 
 def sections_matches(project, section, config):

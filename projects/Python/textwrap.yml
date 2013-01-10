@@ -1,0 +1,5 @@
+section: textwrap
+url: http://docs.python.org/2/library/textwrap.html#textwrap.{entry}
+sort: fixed
+entries:
+    - [ dedent(text), Remove any common leading whitespace from every line in text. ]
