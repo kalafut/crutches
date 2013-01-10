@@ -8,6 +8,7 @@ from os.path import join
 import string
 import random
 import re
+import sys
 import yaml
 
 ASSET_DIR = "assets"
@@ -16,6 +17,11 @@ PROJECTS_DIR = "projects"
 ENTRY_NAME = 0
 ENTRY_DESC = 1
 ENTRY_OPT  = 2
+
+if sys.hexversion > 0x03000000:
+    get_input = input
+else:
+    get_input = raw_input
 
 def next_uid():
     next_uid.uid += 1
