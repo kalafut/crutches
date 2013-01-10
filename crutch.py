@@ -4,12 +4,14 @@ import argparse
 import json
 import os
 import os.path
-from os.path import join
-import string
 import random
 import re
+import string
 import sys
 import yaml
+
+from textwrap import dedent
+from os.path import join
 
 ASSET_DIR = "assets"
 TEMPLATE_DIR = "templates"
@@ -101,8 +103,8 @@ def prepare_entry_url(entry, section_url):
     return url
 
 def generate():
-    project_dir = input("Project directory: ")
-    section_file = input("Section filename: ")
+    project_dir = get_input("Project directory: ")
+    section_file = get_input("Section filename: ")
     path = join(PROJECTS_DIR, project_dir)
     if os.path.exists(join(path, section_file)):
         exit("Error: %s already exists" % section_file)
@@ -111,13 +113,14 @@ def generate():
         os.mkdir(path)
 
     with open(join(path, section_file), "w") as f:
-        f.write(
-"""section: <section_name>
-url: http://example.com/{entry}
-sort: fixed
-entries:
-    - [ sample, "Sample description" ]
-""")
+        boilerplate = """\
+            section: <section_name>
+            url: http://example.com/{entry}
+            sort: fixed
+            entries:
+                - [ sample, "Sample description" ]
+            """
+        f.write(dedent(boilerplate))
         print("\n" + join(path, section_file) + " created.")
 
 def sections_matches(project, section, config):
