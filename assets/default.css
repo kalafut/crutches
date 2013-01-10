@@ -1,6 +1,14 @@
 .hidden { display: none; }
-h1 { color: #eee; background-color: green; }
-body { font-family: sans-serif; background-color: #eeeeee; }
+h1 { 
+    color: #eee; 
+    background-color: rgb(49, 78, 78); 
+    border-radius: 6px;
+    padding: 2px 6px;
+}
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #eeeeee;
+}
 
 table
 {
@@ -8,15 +16,28 @@ border-collapse:collapse;
 }
 table, th, td
 {
-border: 1px solid black;
+border: 1px solid #999;
 }
 td
 {
 padding: 0.4em;
 }
 
-a:link {color:blue;}      /* unvisited link */
-a:visited {color:blue;}  /* visited link */
+a:link {color:#1D44BE;}      /* unvisited link */
+a:visited {color:#1D44BE;}  /* visited link */
 
 #sidebar { float:left; }
 #main { overflow:auto; }
+input[type="text"] {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #aaaaaa;
+    border-radius: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
