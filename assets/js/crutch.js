@@ -23,13 +23,15 @@
     };
     this.Crutch.filter = search_hndl;
     $("#search").on("keyup", search_hndl);
-    $(document).on("keyup", function(e) {
-      if (e.keyCode === 27) {
-        return $("#search").focus();
-      }
+    key("esc", function() {
+      return $("#search").focus();
     });
     $(".project_active").on("click", search_hndl);
-    return filter(parse_search(""));
+    filter(parse_search(""));
+    $("#search").focus();
+    return key.filter = function() {
+      return true;
+    };
   });
 
   hide = function(uid) {

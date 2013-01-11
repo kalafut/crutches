@@ -304,6 +304,7 @@ def main():
 
     with open("index.html", "w") as out:
         out.write(html)
+        print ("index.html compiled ({size} bytes)".format(size=len(html)))
 
 
 if __name__ == "__main__":

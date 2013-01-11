@@ -2,19 +2,28 @@
 <html>
 <head>
     <link rel="stylesheet" href="css/default.css">
+    <script src="js/keymaster.min.js"></script>
     <script src="js/zepto.min.js"></script>
     <script src="js/handlebars.min.js"></script>
     <script src="js/crutch.js"></script>
-    <script>    $(document).ready(function() {
-    $("#prj_all").on("click", function() {
-        $(".project_active").prop("checked",true);
-        Crutch.filter();
-    });
-    $("#prj_none").on("click", function() {
-        $(".project_active").prop("checked",false);
-        Crutch.filter();
+    <script>    
+        $(document).ready(function() {
+            key("ctrl+a", function() {
+                $(".project_active").prop("checked",true);
+                Crutch.filter();
+            });
+            key("ctrl+n", function() {
+                $(".project_active").prop("checked",false);
+                Crutch.filter();
+            });
+            key("ctrl+1", function() {
+                window.open($(".entry:not(.hidden) a").attr("href"), "detail_pg");
+            });
+            // To be fixed and extended...
+            key("ctrl+2", function() {
+                window.open($($(".entry:not(.hidden) a")[1]).attr("href"));
+            });
         });
-    });
     </script>
 
 </head>
@@ -25,8 +34,6 @@
             {{#each projects}}
             <br><input class="project_active" type="checkbox" data-uid="{{this.uid}}" checked="checked" />{{this.project}}
             {{/each}}
-            <br><br>
-            <a id="prj_all" href="#">All</a> <a id="prj_none" href="#">None</a>
         </div>
         <div id="main">
             {{#each projects}} <h1 class="project" id="{{this.uid}}">{{this.project}}</h1>

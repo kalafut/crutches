@@ -15,11 +15,13 @@ $(document).ready () ->
 
     $("#search").on("keyup", search_hndl)
 
-    $(document).on "keyup", (e) ->
-        $("#search").focus() if e.keyCode == 27
+    key("esc", () -> $("#search").focus())
 
     $(".project_active").on("click", search_hndl)
     filter(parse_search(""))
+    $("#search").focus()
+
+    key.filter = () -> return true
 
 
 hide = (uid) -> $("#" + uid).addClass('hidden')
