@@ -19,7 +19,7 @@
 
 ## Configuration
 
-* YAML references (& and \*)  will be flatted in include/exclude sections to simplify files groups.
+* YAML references (& and \*)  will be flattened in include/exclude sections to simplify files groups.
 * Include spec:  ^Python/shutil
 
 ## Content Guide
@@ -102,35 +102,35 @@ important for the maintainability of the Crutches project.
 
 TBD: whether directories can be allowed to not have a `_project.yml` file in it.
 
-<pre>
-projects
-    JavaScript
-        _project.yml
-        jQuery
+
+    projects
+        JavaScript
             _project.yml
-            selectors.yml
-            traversing.yml
-            jQueryUI
+            jQuery
                 _project.yml
-                interactions.yml
-                widgets.yml
-                effects.yml
-        Array.yml
-        String.yml
-    Python
-        _project.yml
-        Django
+                selectors.yml
+                traversing.yml
+                jQueryUI
+                    _project.yml
+                    interactions.yml
+                    widgets.yml
+                    effects.yml
+            Array.yml
+            String.yml
+        Python
             _project.yml
-            db.models.yml
-        re.yml
-        shutil.yml
-    tools
-        _project.yml
-        Emacs
+            Django
+                _project.yml
+                db.models.yml
+            re.yml
+            shutil.yml
+        tools
             _project.yml
-        VIM
-            _project.yml
-</pre>
+            Emacs
+                _project.yml
+            VIM
+                _project.yml
+
 
 ### URLs
 
