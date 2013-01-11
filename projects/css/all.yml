@@ -1,0 +1,5 @@
+section: All
+url: https://developer.mozilla.org/en-US/docs/CSS/{entry}
+sort: fixed
+entries:
+    - [ padding, The padding property sets the required padding space on all sides of an element. ]
