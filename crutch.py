@@ -221,12 +221,20 @@ def load_projects(path, config):
 def yamlize(txt):
     align = 0
     with open(txt,"r") as f:
-        lines = f.readlines()
         yaml_lines = []
-        for x in range(0, len(lines), 2):
-            y = yaml.dump([lines[x].strip(), lines[x+1].strip()], width=200).strip()
-            yaml_lines.append(y)
-            align = max(align, y.find(", "))
+        line1 = line2 = None
+        for x in f:
+            if not line1:
+                if x.strip() != "":
+                    line1 = x
+            elif not line2:
+                line2 = x
+            else:
+                y = yaml.dump([line1.strip(), line2.strip()], width=200).strip()
+                align = max(align, y.find(", "))
+                yaml_lines.append(y)
+                line1 = line2 = None
+
         for line in yaml_lines:
             p = line.partition(", ")
 
