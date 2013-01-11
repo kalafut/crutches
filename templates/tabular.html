@@ -16,8 +16,8 @@
                 $(".project_active").prop("checked",false);
                 Crutch.filter();
             });
-            key("ctrl+1", function() {
-                window.open($(".entry:not(.hidden) a").attr("href"), "detail_pg");
+            key("ctrl+1, enter", function() {
+                window.open($(".entry:not(.hidden) a").attr("href"), "_self");// "detail_pg");
             });
             // To be fixed and extended...
             key("ctrl+2", function() {
