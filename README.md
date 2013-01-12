@@ -1,3 +1,5 @@
+# Note: this project and page are incomplete and under construction right now.
+
 # Crutches
 
 ## Goals

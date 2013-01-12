@@ -8,11 +8,11 @@
     <script src="js/crutch.js"></script>
     <script>    
         $(document).ready(function() {
-            key("alt+a", function() {
+            key("alt+a, ⌘+a", function() {
                 $(".project_active").prop("checked",true);
                 Crutch.filter();
             });
-            key("alt+n", function() {
+            key("alt+n, ⌘+n", function() {
                 $(".project_active").prop("checked",false);
                 Crutch.filter();
             });
