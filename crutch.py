@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+#
+# Copyright (c) 2013 Jim Kalafut
+#
+# Released under the MIT license
+# https://raw.github.com/kalafut/crutches/master/LICENSE
+#
 
 import argparse
 import json
@@ -10,8 +16,8 @@ import string
 import sys
 import yaml
 
-from textwrap import dedent
 from os.path import join
+from textwrap import dedent
 
 ASSET_DIR = "assets"
 TEMPLATE_DIR = "templates"
@@ -20,6 +26,7 @@ ENTRY_NAME = 0
 ENTRY_DESC = 1
 ENTRY_OPT  = 2
 
+# Python 3 compatibility shim
 if sys.hexversion > 0x03000000:
     get_input = input
 else:
@@ -133,7 +140,7 @@ def generate():
 
 def sections_matches(project, section, config):
     # Make a fully qualified section name
-    fq_section = "{project}#{section}".format(project=project, section=section["section"])
+    fq_section = "{project}/{section}".format(project=project, section=section["section"])
 
     matched = False
 
