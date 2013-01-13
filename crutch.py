@@ -138,9 +138,9 @@ def generate():
 
         print("\n" + join(path, section_file) + " created.")
 
-def sectionIncluded(path, config):
+def sectionIncluded(path, section, config):
     # Make a fully qualified section name
-    fq_section = "/".join(path)
+    fq_section = "/".join(path) + "//" + section
 
     matched = False
 
@@ -180,7 +180,7 @@ def load_projects(path, config, project_path = [], db = {"projects":[]}):
         project_path.append(prj_desc["project"])
         for section_file in [ join(path,name) for name in os.listdir(path) if os.path.splitext(name)[1] == ".yml" and not name == "_project.yml" ]:
             for section in load_sections(section_file):
-                if sectionIncluded(project_path + [section["section"]], config):
+                if sectionIncluded(project_path, section["section"], config):
                     new_project["sections"].append(section)
 
     for name in os.listdir(path):

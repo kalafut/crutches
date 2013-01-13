@@ -27,20 +27,20 @@ $(document).ready () ->
 hide = (uid) -> $("#" + uid).addClass('hidden')
 
 parse_search = (str) ->
-    prj_ind = "@"
-    sec_ind = "#"
+    prj_ind = "/"
+    sec_ind = "//"
     terms = []
     projects = []
     sections = []
 
     for group in str.trim().split(search_split)
         do (group) ->
-            if group.indexOf(prj_ind) == 0
-                if group.length > prj_ind.length
-                    projects.push(group.substring(prj_ind.length))
-            else if group.indexOf(sec_ind) == 0
+            if group.indexOf(sec_ind) == 0
                 if group.length > sec_ind.length
                     sections.push(group.substring(sec_ind.length))
+            else if group.indexOf(prj_ind) == 0
+                if group.length > prj_ind.length
+                    projects.push(group.substring(prj_ind.length))
             else
                 terms.push(group)
 

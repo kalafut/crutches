@@ -40,20 +40,20 @@
 
   parse_search = function(str) {
     var group, prj_ind, projects, sec_ind, sections, terms, _fn, _i, _len, _ref;
-    prj_ind = "@";
-    sec_ind = "#";
+    prj_ind = "/";
+    sec_ind = "//";
     terms = [];
     projects = [];
     sections = [];
     _ref = str.trim().split(search_split);
     _fn = function(group) {
-      if (group.indexOf(prj_ind) === 0) {
-        if (group.length > prj_ind.length) {
-          return projects.push(group.substring(prj_ind.length));
-        }
-      } else if (group.indexOf(sec_ind) === 0) {
+      if (group.indexOf(sec_ind) === 0) {
         if (group.length > sec_ind.length) {
           return sections.push(group.substring(sec_ind.length));
+        }
+      } else if (group.indexOf(prj_ind) === 0) {
+        if (group.length > prj_ind.length) {
+          return projects.push(group.substring(prj_ind.length));
         }
       } else {
         return terms.push(group);
