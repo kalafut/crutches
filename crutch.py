@@ -138,9 +138,9 @@ def generate():
 
         print("\n" + join(path, section_file) + " created.")
 
-def sections_matches(project, section, config):
+def sectionIncluded(path, config):
     # Make a fully qualified section name
-    fq_section = "{project}/{section}".format(project=project, section=section["section"])
+    fq_section = "/".join(path)
 
     matched = False
 
@@ -166,7 +166,7 @@ def sections_matches(project, section, config):
 def validate_section(section):
     pass
 
-def lp2(path, project_path = [], db = {"projects":[]}):
+def load_projects(path, config, project_path = [], db = {"projects":[]}):
     """
     Traverse the projects tree, identify and loading matching projects.
     """
@@ -179,12 +179,14 @@ def lp2(path, project_path = [], db = {"projects":[]}):
 
         project_path.append(prj_desc["project"])
         for section_file in [ join(path,name) for name in os.listdir(path) if os.path.splitext(name)[1] == ".yml" and not name == "_project.yml" ]:
-            new_project["sections"] += load_sections(section_file)
+            for section in load_sections(section_file):
+                if sectionIncluded(project_path + [section["section"]], config):
+                    new_project["sections"].append(section)
 
     for name in os.listdir(path):
         next_path = join(path,name)
         if os.path.isdir(next_path):
-            lp2(next_path, project_path, db)
+            load_projects(next_path, config, project_path, db)
 
     if prj_desc:
         project_path.pop()
@@ -245,66 +247,6 @@ def load_sections(filename):
                 content["entries"] = entry_array
                 sections.append(content)
     return sections
-
-
-def load_projects(path, config):
-    db= { 'projects': [] }
-
-    projects = [ name for name in os.listdir(path) if os.path.isdir(join(path, name)) and os.path.exists(join(path,name,"_project.yml")) ]
-
-    for project in projects:
-        with open(join(path, project, "_project.yml")) as f:
-            prj_cfg = yaml.load(f)
-            prj = { 'project':prj_cfg["project"],  'sections': [], 'uid': next_uid() }
-
-        for infile in [ name for name in os.listdir(join(path, project)) if os.path.splitext(name)[1] == ".yml" and not name == "_project.yml" ]:
-            with open(join(path, project, infile), "r") as doc:
-                for content in yaml.load_all(doc):
-                    content['uid'] = next_uid()
-
-                    if "section" not in content:
-                        exit("%s: missing 'section:' declaration" % infile)
-
-                    if content["section"] in prj:
-                        exit("Error: duplicate section: %s" % infile)
-
-
-                    if sections_matches(prj["project"], content, config):
-                        prj['sections'].append(content)
-
-                        if "url" in content:
-                            section_url = content["url"]
-                        else:
-                            section_url = None
-
-                        # convert terse entry list into dictionary and add an ID
-                        entry_array = []
-                        for entry in content['entries']:
-                            if len(entry) > 3 or (len(entry) == 3 and not type(entry[2]) == dict):
-                                exit("Invalid entry declaration in %s/%s: " % (project, content["section"])  + repr(entry))
-
-                            #TODO this is not correctly handling just a description plus options
-                            if len(entry) == 1:
-                                new_entry = { "description": entry[0], "uid": next_uid() }
-                            elif len(entry) >= 2:
-                                new_entry = { "term": entry[0], "description": entry[1], "uid": next_uid() }
-
-                            if len(entry) > ENTRY_OPT:
-                                new_entry["options"] = entry[ENTRY_OPT]
-                            else:
-                                new_entry["options"] = {}
-                            new_entry['entry_url'] = prepare_entry_url(new_entry, section_url)
-                            entry_array.append(new_entry)
-                        content["entries"] = entry_array
-
-        # if no sections matched, don't add the project
-        if len(prj["sections"]) > 0:
-            db["projects"].append(prj)
-
-    #print json.dumps(db, sort_keys = 4, indent = 2)
-    return db
-
-    #for root, dirs, files in os.walk(path):
 
 def yamlize(txt):
     align = 0
@@ -387,8 +329,7 @@ def main():
 
     config = load_config(args.config)
 
-    #db = load_projects("projects", config)
-    db = lp2("projects")
+    db = load_projects("projects", config)
     html = parse_template(config['template'] + ".html", db)
 
     with open("index.html", "w") as out:

@@ -1,0 +1,5 @@
+section: os
+url: http://docs.python.org/2/library/os.html#os.{entry}
+sort: fixed
+entries:
+    - [ walk, "Generate the file names in a directory tree by walking the tree either top-down or bottom-up." ]

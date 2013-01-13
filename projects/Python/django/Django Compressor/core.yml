@@ -1,0 +1,5 @@
+section: core
+url: http://example.com/{entry}
+sort: fixed
+entries:
+    - [ sample, "Sample description" ]
