@@ -1,6 +1,6 @@
 main:
-    include: [ Python ]
-    exclude: [ Python/re ]
+    include: [ ]
+    exclude: [ ]
     template: tabular
 
 bootstrap:
