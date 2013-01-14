@@ -131,7 +131,7 @@
         entry_found = false;
         section_disabled = false;
         if (query.sections.length > 0 && some(query.sections, function(search) {
-          return project.sections[section_idx].section.toLowerCase().indexOf(search.toLowerCase()) !== 0;
+          return project.sections[section_idx].section.toLowerCase().indexOf(search.toLowerCase()) === -1;
         })) {
           section_disabled = true;
         }

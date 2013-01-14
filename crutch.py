@@ -166,7 +166,7 @@ def sectionIncluded(path, section, config):
 def validate_section(section):
     pass
 
-def load_projects(path, config, project_path = [], db = {"projects":[]}):
+def load_projects(path, config = None, project_path = [], db = {"projects":[]}):
     """
     Traverse the projects tree, identify and loading matching projects.
     """
@@ -174,13 +174,13 @@ def load_projects(path, config, project_path = [], db = {"projects":[]}):
     # Check current folder
     prj_desc = load_project_desc(join(path,"_project.yml"))
     if prj_desc:
-        new_project = { "project":prj_desc["project"], "sections": [], "uid": next_uid() }
+        project_path.append(prj_desc["project"])
+        new_project = { "project":prj_desc["project"], "sections": [], "uid": next_uid(), "path": "/".join(project_path), "description": prj_desc["description"] }
         db["projects"].append(new_project)
 
-        project_path.append(prj_desc["project"])
         for section_file in [ join(path,name) for name in os.listdir(path) if os.path.splitext(name)[1] == ".yml" and not name == "_project.yml" ]:
             for section in load_sections(section_file):
-                if sectionIncluded(project_path, section["section"], config):
+                if not config or sectionIncluded(project_path, section["section"], config):
                     new_project["sections"].append(section)
 
     for name in os.listdir(path):
@@ -209,7 +209,7 @@ def load_sections(filename):
     will always be returned.
     """
     sections = []
-    print("Loading " + filename)
+    #print("Loading " + filename)
     with open(filename, "r") as f:
         for content in yaml.load_all(f):
             content['uid'] = next_uid()
@@ -247,6 +247,11 @@ def load_sections(filename):
                 content["entries"] = entry_array
                 sections.append(content)
     return sections
+
+def list_projects():
+    db = load_projects("projects")
+    for project in db["projects"]:
+        print("{:<50}{:}".format(project["path"], project["description"] or ""))
 
 def yamlize(txt):
     align = 0
@@ -308,15 +313,20 @@ def stress_test(projects, sections, entries):
 
 def main():
     parser = argparse.ArgumentParser(description='Generate parse project files into a single-file reference.')
-    parser.add_argument('-c', '--config', dest='config', action='store', default='main', help='Select a configuration from config.yml [default: main]')
-    parser.add_argument('-g', '--generate', dest='generate', action='store_true', help='Generate a boilerplate project/section')
-    parser.add_argument('-y', '--yamlize', dest='yamlize', action='store', metavar='FILE', help='Create an entries section from FILE')
+    parser.add_argument('-c', dest='config', action='store', default='main', help='Select a configuration from config.yml [default: main]')
+    parser.add_argument('-g', dest='generate', action='store_true', help='Generate a boilerplate project/section')
+    parser.add_argument('-y', dest='yamlize', action='store', metavar='FILE', help='Create an entries section from FILE')
+    parser.add_argument('-l', dest='list', action='store_true', help='List all projects')
     parser.add_argument('--stress', dest='stress', action='store_true', help='Stress test')
     args = parser.parse_args()
 
     if args.generate:
         generate()
-        exit();
+        exit()
+
+    if args.list:
+        list_projects()
+        exit()
 
     if args.yamlize:
         yamlize(args.yamlize)

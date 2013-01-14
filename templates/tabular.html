@@ -55,8 +55,10 @@
                             {{{this.term}}}
                             {{/if}}
                         </td>
-                        {{/if}}
                         <td>{{{this.description}}}</td>
+                        {{else}}
+                        <td colspan="2">{{{this.description}}}</td>
+                        {{/if}}
                     </tr>
                     {{/each}}
                 </table>

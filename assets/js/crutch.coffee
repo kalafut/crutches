@@ -81,7 +81,7 @@ filter = (query) ->
 
             # If the section filter "s:xxx" doesn't match, mark the section as disabled
             section_disabled = true  if query.sections.length > 0 and some(query.sections, (search) ->
-                project.sections[section_idx].section.toLowerCase().indexOf(search.toLowerCase()) != 0
+                project.sections[section_idx].section.toLowerCase().indexOf(search.toLowerCase()) == -1
             )
             entry_idx = 0
 

@@ -9,4 +9,39 @@ url: http://docs.python.org/2/library/stdtypes.html#str.$(entry)
 entries:
     - [ ascii_uppercase, String of characters A-Z. ]
     - [ digits, String of characters 0-9. ]
+    - [ format, Perform a string formatting operation. The string can contain literal text or replacement fields delimited by braces. ]
+---
+section: string format specification
+entries:
+    -
+      - |
+        <pre>
+        format_spec ::=  [[fill]align][sign][#][0][width][,][.precision][type]
+        fill        ::=  a character other than '{' or '}'
+        align       ::=  "<" | ">" | "=" | "^"
+        sign        ::=  "+" | "-" | " "
+        width       ::=  integer
+        precision   ::=  integer
+        type        ::=  "b" | "c" | "d" | "e" | "E" | "f" | "F" | "g" | "G" | "n" | "o" | "s" | "x" | "X" | "%"
+        </pre>
 
+    - [<,   Forces the field to be left-aligned within the available space (this is the default for most objects).]
+    - ['>', Forces the field to be right-aligned within the available space (this is the default for numbers).]
+    - ['=', Forces the padding to be placed after the sign (if any) but before the digits. This is used for printing fields in the form "+000000120". This alignment option is only valid for numeric types.]
+    - [+,     indicates that a sign should be used for both positive as well as negative numbers.]
+    - ['-',   indicates that a sign should be used only for negative numbers (this is the default behavior).]
+    - [space, 'indicates that a leading space should be used on positive numbers, and a minus sign on negative numbers.']
+    - [b,     Binary format. Outputs the number in base 2.]
+    - [c,     Character. Converts the integer to the corresponding unicode character before printing.]
+    - [d,     Decimal Integer. Outputs the number in base 10.]
+    - [o,     Octal format. Outputs the number in base 8.]
+    - [x,     'Hex format. Outputs the number in base 16, using lower- case letters for the digits above 9.']
+    - [X,     'Hex format. Outputs the number in base 16, using upper- case letters for the digits above 9.']
+    - [n,     'Number. This is the same as ''d'', except that it uses the current locale setting to insert the appropriate number separator characters.']
+    - [e,     Exponent notation. Prints the number in scientific notation using the letter 'e' to indicate the exponent.]
+    - [E,     Exponent notation. Same as 'e' except it uses an upper case 'E' as the separator character.]
+    - [f,     Fixed point. Displays the number as a fixed-point number.]
+    - [F,     Fixed point. Same as 'f'.]
+    - [g,     'General format. For a given precision p >= 1, this rounds the number to p significant digits and then formats the result in either fixed-point format or in scientific notation, depending on its magnitude.']
+    - [G,     'General format. Same as ''g'' except switches to ''E'' if the number gets too large. The representations of infinity and NaN are uppercased, too.']
+    - [n,     'Number. This is the same as ''g'', except that it uses the current locale setting to insert the appropriate number separator characters.']
