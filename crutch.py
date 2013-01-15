@@ -188,12 +188,15 @@ def load_projects(path, config = None, project_path = [], db = {"projects":[]}):
     if prj_desc:
         project_path.append(prj_desc["project"])
         new_project = { "project":prj_desc["project"], "sections": [], "uid": next_uid(), "path": "/".join(project_path), "description": prj_desc["description"] }
-        db["projects"].append(new_project)
 
         for section_file in [ join(path,name) for name in os.listdir(path) if os.path.splitext(name)[1] == ".yml" and not name == "_project.yml" ]:
             for section in load_sections(section_file):
                 if not config or section_included(project_path, section["section"], config):
                     new_project["sections"].append(section)
+
+        # if no sections matched, don't add the project
+        if len(new_project["sections"]) > 0:
+            db["projects"].append(new_project)
 
     for name in os.listdir(path):
         next_path = join(path,name)
@@ -202,6 +205,9 @@ def load_projects(path, config = None, project_path = [], db = {"projects":[]}):
 
     if prj_desc:
         project_path.pop()
+
+
+
 
     return db
 
