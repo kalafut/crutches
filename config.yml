@@ -2,9 +2,3 @@ main:
     include: [ ]
     exclude: [ ]
     template: tabular
-
-bootstrap:
-    include:
-    exclude:
-    template: bootstrap
-
