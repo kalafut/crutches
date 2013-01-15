@@ -1,4 +1,17 @@
+files_a: &a
+    - Django
+
+files_b: &b
+    - *a
+    - Unix
+
+
 main:
     include: [ ]
+    exclude: [ ]
+    template: tabular
+
+test:
+    include: [ *a, *b, Perl ]
     exclude: [ ]
     template: tabular

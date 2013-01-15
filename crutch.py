@@ -7,6 +7,7 @@
 #
 
 import argparse
+import collections
 import json
 import os
 import os.path
@@ -53,6 +54,17 @@ def replace_tag(match):
     with open(join(ASSET_DIR, fn), 'r') as f:
         contents = f.read()
     return "<script>{contents}</script>".format(contents=contents)
+
+def flatten(l):
+    """
+    Courtesy of: http://stackoverflow.com/a/2158532/453290
+    """
+    for el in l:
+        if isinstance(el, collections.Iterable) and not isinstance(el, basestring):
+            for sub in flatten(el):
+                yield sub
+        else:
+            yield el
 
 def parse_template(name, data):
     with open(join(TEMPLATE_DIR, name), "r") as f:
@@ -138,14 +150,14 @@ def generate():
 
         print("\n" + join(path, section_file) + " created.")
 
-def sectionIncluded(path, section, config):
+def section_included(path, section, config):
     # Make a fully qualified section name
     fq_section = "/".join(path) + "//" + section
 
     matched = False
 
     if config["include"]:
-        for include in config["include"]:
+        for include in flatten(config["include"]):
             # TODO  Compile these things once!
             if re.search(re.compile(include), fq_section):
                 matched = True
@@ -180,7 +192,7 @@ def load_projects(path, config = None, project_path = [], db = {"projects":[]}):
 
         for section_file in [ join(path,name) for name in os.listdir(path) if os.path.splitext(name)[1] == ".yml" and not name == "_project.yml" ]:
             for section in load_sections(section_file):
-                if not config or sectionIncluded(project_path, section["section"], config):
+                if not config or section_included(project_path, section["section"], config):
                     new_project["sections"].append(section)
 
     for name in os.listdir(path):
@@ -248,10 +260,13 @@ def load_sections(filename):
                 sections.append(content)
     return sections
 
-def list_projects():
+def list_projects(search = ""):
+    search = search.lower()
     db = load_projects("projects")
     for project in db["projects"]:
-        print("{:<50}{:}".format(project["path"], project["description"] or ""))
+        path, desc = project["path"], project["description"]
+        if path.lower().find(search) >= 0 or desc and desc.lower().find(search) >= 0:
+            print("{:<50}{:}".format(path, desc or ""))
 
 def yamlize(txt):
     align = 0
@@ -316,7 +331,7 @@ def main():
     parser.add_argument('-c', dest='config', action='store', default='main', help='Select a configuration from config.yml [default: main]')
     parser.add_argument('-g', dest='generate', action='store_true', help='Generate a boilerplate project/section')
     parser.add_argument('-y', dest='yamlize', action='store', metavar='FILE', help='Create an entries section from FILE')
-    parser.add_argument('-l', dest='list', action='store_true', help='List all projects')
+    parser.add_argument('-l', dest='listing', const="__nothing__", nargs='?', metavar="search", help='List all projects containing "search" [default: all projects]')
     parser.add_argument('--stress', dest='stress', action='store_true', help='Stress test')
     args = parser.parse_args()
 
@@ -324,8 +339,8 @@ def main():
         generate()
         exit()
 
-    if args.list:
-        list_projects()
+    if args.listing:
+        list_projects("" if args.listing == "__nothing__" else args.listing)
         exit()
 
     if args.yamlize:
