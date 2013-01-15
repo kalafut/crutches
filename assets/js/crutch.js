@@ -24,6 +24,7 @@
     this.Crutch.filter = search_hndl;
     $("#search").on("keyup", search_hndl);
     key("esc", function() {
+      window.scrollTo(0, 0);
       return $("#search").focus();
     });
     $(".project_active").on("click", search_hndl);
@@ -49,14 +50,14 @@
     _fn = function(group) {
       if (group.indexOf(sec_ind) === 0) {
         if (group.length > sec_ind.length) {
-          return sections.push(group.substring(sec_ind.length));
+          return sections.push(group.substring(sec_ind.length).toLowerCase());
         }
       } else if (group.indexOf(prj_ind) === 0) {
         if (group.length > prj_ind.length) {
-          return projects.push(group.substring(prj_ind.length));
+          return projects.push(group.substring(prj_ind.length).toLowerCase());
         }
       } else {
-        return terms.push(group);
+        return terms.push(group.toLowerCase());
       }
     };
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -93,7 +94,7 @@
   };
 
   filter = function(query) {
-    var active_project_uid, active_projects, e, entry, entry_found, entry_idx, matched, project, project_disabled, regexes, section_disabled, section_found, section_idx, _i, _len, _ref, _results;
+    var active_project_uid, active_projects, e, entry, entry_found, entry_idx, matched, project, project_disabled, section_disabled, section_found, section_idx, _i, _len, _ref, _results;
     $(".entry, .section, .project").removeClass("hidden");
     active_projects = $(".project_active:checked");
     active_project_uid = (function() {
@@ -105,16 +106,6 @@
       }
       return _results;
     })();
-    regexes = (function() {
-      var _i, _len, _ref, _results;
-      _ref = query.terms;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        e = _ref[_i];
-        _results.push(new RegExp(e, "i"));
-      }
-      return _results;
-    })();
     _ref = _data.projects;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -122,7 +113,7 @@
       section_found = false;
       project_disabled = false;
       if (!contains(active_project_uid, project.uid) || (query.projects.length > 0 && some(query.projects, function(search) {
-        return project.project.toLowerCase().indexOf(search.toLowerCase()) !== 0;
+        return project.project.toLowerCase().indexOf(search) === -1;
       }))) {
         project_disabled = true;
       }
@@ -131,7 +122,7 @@
         entry_found = false;
         section_disabled = false;
         if (query.sections.length > 0 && some(query.sections, function(search) {
-          return project.sections[section_idx].section.toLowerCase().indexOf(search.toLowerCase()) === -1;
+          return project.sections[section_idx].section.toLowerCase().indexOf(search) === -1;
         })) {
           section_disabled = true;
         }
@@ -139,12 +130,11 @@
         while (entry_idx < project["sections"][section_idx]["entries"].length) {
           entry = project["sections"][section_idx]["entries"][entry_idx];
           matched = true;
-          if (project_disabled || section_disabled || regexes.length > 0 && some(regexes, function(re) {
-            if (entry.term != null) {
-              return entry.description.search(re) === -1 && entry.term.search(re) === -1;
-            } else {
-              return entry.description.search(re) === -1;
-            }
+          if (project_disabled || section_disabled || query.terms.length > 0 && some(query.terms, function(exp) {
+            var not_found;
+            not_found = entry.term != null ? entry.description.toLowerCase().indexOf(exp) === -1 && entry.term.toLowerCase().indexOf(exp) === -1 : entry.description.toLowerCase().indexOf(exp) === -1;
+            not_found = not_found && project.project.toLowerCase().indexOf(exp) === -1;
+            return not_found = not_found && project.sections[section_idx].section.toLowerCase().indexOf(exp) === -1;
           })) {
             matched = false;
           }

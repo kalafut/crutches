@@ -15,7 +15,10 @@ $(document).ready () ->
 
     $("#search").on("keyup", search_hndl)
 
-    key("esc", () -> $("#search").focus())
+    # Scroll to top of window and set focus in search box
+    key("esc", () ->
+        window.scrollTo(0, 0)
+        $("#search").focus())
 
     $(".project_active").on("click", search_hndl)
     filter(parse_search(""))
@@ -37,12 +40,12 @@ parse_search = (str) ->
         do (group) ->
             if group.indexOf(sec_ind) == 0
                 if group.length > sec_ind.length
-                    sections.push(group.substring(sec_ind.length))
+                    sections.push(group.substring(sec_ind.length).toLowerCase())
             else if group.indexOf(prj_ind) == 0
                 if group.length > prj_ind.length
-                    projects.push(group.substring(prj_ind.length))
+                    projects.push(group.substring(prj_ind.length).toLowerCase())
             else
-                terms.push(group)
+                terms.push(group.toLowerCase())
 
     return { terms: terms, projects: projects, sections:sections }
 
@@ -61,8 +64,6 @@ filter = (query) ->
 
     active_projects = $(".project_active:checked")
     active_project_uid = (parseInt $(e).attr("data-uid") for e in active_projects)
-    regexes = (new RegExp(e, "i") for e in query.terms)
-
 
     for project in _data.projects
         section_found = false
@@ -71,7 +72,7 @@ filter = (query) ->
         # If either the project is disabled by the user, or any of the project filters
         # "p:xxx" don't match, mark the project as disabled
         project_disabled = true  if not contains(active_project_uid, project.uid) or (query.projects.length > 0 and some(query.projects, (search) ->
-            project.project.toLowerCase().indexOf(search.toLowerCase()) != 0
+            project.project.toLowerCase().indexOf(search) == -1
         ))
         section_idx = 0
 
@@ -81,7 +82,7 @@ filter = (query) ->
 
             # If the section filter "s:xxx" doesn't match, mark the section as disabled
             section_disabled = true  if query.sections.length > 0 and some(query.sections, (search) ->
-                project.sections[section_idx].section.toLowerCase().indexOf(search.toLowerCase()) == -1
+                project.sections[section_idx].section.toLowerCase().indexOf(search) == -1
             )
             entry_idx = 0
 
@@ -90,11 +91,13 @@ filter = (query) ->
                 matched = true
 
                 # Test each search regex, aborting if any fail to match
-                matched = false  if project_disabled or section_disabled or regexes.length > 0 and some(regexes, (re) ->
-                    if entry.term?
-                        entry.description.search(re) is -1 and entry.term.search(re) is -1 
+                matched = false  if project_disabled or section_disabled or query.terms.length > 0 and some(query.terms, (exp) ->
+                    not_found = if entry.term?
+                        entry.description.toLowerCase().indexOf(exp) is -1 and entry.term.toLowerCase().indexOf(exp) is -1
                     else
-                        entry.description.search(re) is -1
+                        entry.description.toLowerCase().indexOf(exp) is -1
+                    not_found = not_found and project.project.toLowerCase().indexOf(exp) is -1
+                    not_found = not_found and project.sections[section_idx].section.toLowerCase().indexOf(exp) is -1
                 )
                 if matched
                     entry_found = true
