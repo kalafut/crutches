@@ -2,5 +2,5 @@ section: argparse.ArgumentParser
 description: "Something"
 url: "http://docs.python.org/2/library/argparse.html#module-argparse"
 entries:
-    - [ add_argument, Add an argument to a parser object ]
+    - [ add_argument, Add an argument to a parser object, { url: "http://docs.python.org/2/library/argparse.html#the-add-argument-method" } ]
     - [ parse_args, "Convert argument strings to objects and assign them as attributes of the namespace." ]
