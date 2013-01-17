@@ -1,9 +1,9 @@
 this.Crutch = {}
 search_split = new RegExp(" +")
 $(document).ready () ->
-    template = Handlebars.compile(_template)
+    content = this.Crutch.render(_template, _data)
 
-    $("body").append(template(_data))
+    $("body").append(content)
 
     search_hndl = (e) ->
         if e?

@@ -313,6 +313,14 @@ def random_sentence(min_len, max_len):
 def random_project():
     r = random_word(5,10)
     os.mkdir(join(PROJECTS_DIR, r))
+    with open(join(PROJECTS_DIR, r, "_project.yml"), "w") as f:
+        boilerplate = """\
+            project: {project}
+            description:
+            url:
+            """.format(project=r)
+        f.write(dedent(boilerplate))
+
     return r
 
 def random_section(project, entries):

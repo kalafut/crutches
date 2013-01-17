@@ -24,6 +24,9 @@
                 window.open($($(".entry:not(.hidden) a")[1]).attr("href"));
             });
         });
+        Crutch.render = function(template, data) {
+            return Handlebars.compile(template)(data);
+        };
     </script>
 
 </head>
