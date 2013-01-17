@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        textarea { font-size: 100%; width:100%; }
+    </style>
+</head>
+<body>
+    <textarea id="input" name="" rows="10"></textarea>
+    <br>
+    <textarea id="output" name="" rows="10"></textarea>
+
+    <script type="text/javascript">
+        var lastInput = "";
+
+        function proc() {
+            var input = document.getElementById("input");
+            var output = document.getElementById("output");
+
+            if(input.value === lastInput) {
+                return;
+            }
+            lastInput = input.value;
+
+
+            lines = input.value.split("\n");
+
+            output.value = ""
+            for(var i = 0, even = true, firstLine = ""; i < lines.length; i++) {
+                var line = JSON.stringify(lines[i].trim()).slice(1, -1);
+
+                if(line.search(/[-?:,[\]{}#&*!|>'"%@`]/) !== -1) {
+                    line = '"' + line + '"';
+                }
+                if(even) {
+                    firstLine = line;
+                } else {
+                    output.value += "   - [" + firstLine + ", " + line + "]\n";
+                }
+                even = !even;
+            }
+        }
+    setInterval(proc, 100);
+    </script>
+</body>
+</html>
