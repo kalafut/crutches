@@ -15,6 +15,12 @@
     <script type="text/javascript">
         var lastInput = "";
 
+        function cleaned(str) {
+            str = str.replace(/\s/g," ");
+            str = str.replace(/\u2018/g,"'"); // &lsquo;
+            return str;
+        }
+
         function proc() {
             var input = document.getElementById("input");
             var output = document.getElementById("output");
@@ -37,19 +43,25 @@
                     even = true;
                 } else {
                     if(blockMode) {
-                        output.value += "       " + lines[i] + "\n";
+                        output.value += "       " + cleaned(lines[i]) + "\n";
                     } else {
-                    var line = JSON.stringify(lines[i].trim()).slice(1, -1);
+                        var l = lines[i].split("<==>");
 
-                    if(line.search(/[-?:,[\]{}#&*!|>'"%@`]/) !== -1) {
-                        line = '"' + line + '"';
-                    }
-                    if(even) {
-                        firstLine = line;
-                    } else {
-                        output.value += "    - [" + firstLine + ", " + line + "]\n";
-                    }
-                    even = !even;
+                        if(l.length === 2 && even) {
+                            lines.splice(i, 1, l[0], l[1]);
+                        }
+
+                        var line = JSON.stringify(cleaned(lines[i].trim())).slice(1, -1);
+
+                        if(line.search(/[-?:,[\]{}#&*!|>'"%@`]/) !== -1) {
+                            line = '"' + line + '"';
+                        }
+                        if(even) {
+                            firstLine = line;
+                        } else {
+                            output.value += "    - [" + firstLine + ", " + line + "]\n";
+                        }
+                        even = !even;
                     }
                 }
             }

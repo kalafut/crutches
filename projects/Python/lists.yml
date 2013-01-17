@@ -1,0 +1,19 @@
+section: List operations
+description:
+url: "http://docs.python.org/2/library/stdtypes.html#typesseq-mutable"
+entries:
+    - ["s[i] = x", item i of s is replaced by x]
+    - ["s[i:j] = t", slice of s from i to j is replaced by the contents of the iterable t]
+    - ["del s[i:j]", "same as s[i:j] = []"]
+    - ["s[i:j:k] = t", "the elements of s[i:j:k] are replaced by those of t"]
+    - ["del s[i:j:k]", "removes the elements of s[i:j:k] from the list"]
+    - [s.append(x), "same as s[len(s):len(s)] = [x]"]
+    - [s.extend(x), "same as s[len(s):len(s)] = x"]
+    - [s.count(x), "return number of i's for which s[i] == x"]
+    - ["s.index(x[, i[, j]])", "return smallest k such that s[k] == x and i <= k < j"]
+    - ["s.insert(i, x)", "same as s[i:i] = [x]"]
+    - ["s.pop([i])", "same as x = s[i]; del s[i]; return x"]
+    - [s.remove(x), "same as del s[s.index(x)]"]
+    - [s.reverse(), reverses the items of s in place]
+    - ["s.sort([cmp[, key[, reverse]]])", sort the items of s in place]
+ 
