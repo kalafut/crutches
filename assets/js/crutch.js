@@ -7,9 +7,9 @@
   search_split = new RegExp(" +");
 
   $(document).ready(function() {
-    var search_hndl, template;
-    template = Handlebars.compile(_template);
-    $("body").append(template(_data));
+    var content, search_hndl;
+    content = this.Crutch.render(_template, _data);
+    $("body").append(content);
     search_hndl = function(e) {
       var query, val;
       if (e != null) {
