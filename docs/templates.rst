@@ -1,3 +1,6 @@
 .. _templates:
 
+Template Guide
+##############
+
 

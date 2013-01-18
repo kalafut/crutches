@@ -1,5 +1,8 @@
 .. _contributing:
 
+Author's Guide
+##############
+
 Unicode
 #######
 
