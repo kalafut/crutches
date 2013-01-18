@@ -6,13 +6,37 @@ Unicode
 The toolchain supports Unicode, so you are able to include "special" characters
 as needed. But be on the lookout for inadvertant subtitions that may get introduced
 if you're importing content from elsewhere. For example, the replacement of quotes
-(e.g. \` -> ‘), often done to enhance the appearance of a website, can cause annoying
+(e.g. \` -> ), often done to enhance the appearance of a website, can cause annoying
 hiccups when later copying-and-pasting from a cheat sheet into code. In general, I'd
 recommend keeping sections free of such characters unless there is a good reason not to.
 
 There is tool support to help you. (not yet!) TODO: flagged non-standard(?) characters.
 
 (Talk about editors/YAML/UTF-8?)
+
+Licensing
+#########
+The Crutches content is provided under the Creative Common Attribution-ShareAlike 3.0
+Unported license. This ensures that the content can be broadly used and shared.
+
+**Important**: if you are creating content and contributing it to the Cruthes repository,
+you are agreeing for it to be provided under this license.
+
+I think most people writing content will probably have little issue with this requirement
+(and if you do, don't contribute). The trickier bit is trying to make sure that copied
+and derived content from elsewhere is acceptable and properly attributed. First, all
+content should be attributed whenever possible. This is just good etiquette. But in many
+cases, attribution is **required**. You must review the copyright and/or licensing of
+text before bringing it in, and often you will need to add or update the ``attribution``
+tag.
+
+Some content cannot be imported. If material bears a copyright with no additional licensing
+expressly given, you can't assume you can import it. You may contact the author to seek
+permission, but be sure to explain the CC license that you're seeking. The more difficult
+to.....  ref GFDL.
+
+
+
 
 Project organization
 ####################
