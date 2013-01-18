@@ -1,5 +1,22 @@
 .. _contributing:
 
+Author's Guide
+##############
+
+Unicode
+#######
+
+The toolchain supports Unicode, so you are able to include "special" characters
+as needed. But be on the lookout for inadvertant subtitions that may get introduced
+if you're importing content from elsewhere. For example, the replacement of quotes
+(e.g. \` -> ), often done to enhance the appearance of a website, can cause annoying
+hiccups when later copying-and-pasting from a cheat sheet into code. In general, I'd
+recommend keeping sections free of such characters unless there is a good reason not to.
+
+There is tool support to help you. (not yet!) TODO: flagged non-standard(?) characters.
+
+(Talk about editors/YAML/UTF-8?)
+
 Licensing
 #########
 The Crutches content is provided under the Creative Common Attribution-ShareAlike 3.0
