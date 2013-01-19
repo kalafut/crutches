@@ -49,7 +49,7 @@ Project objects
 
 .. attribute:: uid
 
-    An unique id for this project element. This id should be assigned to ``data-uid`` for the project name
+    An unique ID for this project element. This ID should be assigned to ``data-uid`` for the project name
     markup in order for filtering to work properly.
 
 .. _entry:
