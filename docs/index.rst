@@ -11,9 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   templates
    contributing
    design
+   templates
 
 
 
@@ -23,5 +23,4 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`search`
-* :ref:`add`
 
