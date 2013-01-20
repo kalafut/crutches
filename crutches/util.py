@@ -1,3 +1,5 @@
+import collections
+
 def next_uid():
     next_uid.uid += 1
     return next_uid.uid

@@ -69,7 +69,7 @@ def load_sections(filename):
 
             if content["section"] in prj:
                 exit("Error: duplicate section: %s" % infile)
-"""
+            """
 
             if True: #sections_matches(prj["project"], content, config):
                 # entries
