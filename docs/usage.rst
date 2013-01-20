@@ -1,7 +1,7 @@
 .. _usage::
 
-Browser Commands
-################
+Browser Interface
+#################
 
 .. note:: All development has been done on recent versions of Chrome, with spot testing
           on other browsers.
@@ -41,3 +41,15 @@ ter                      matches "ter" everywhere (e.g. would match "filter")
 //^re                    elements in "re" sections. "re" is so common that "^" is almost mandatory.
 /perl //^re              elements of the "re" section of the Perl project
 =============            =======
+
+Project enable/disable
+#####################
+
+Keyboard commands
+#################
+
+A couple of helpful keyboard commands the interface offers:
+
+* **ESC** will scroll to the top of the window, clear and set focus on the search box.
+* **ENT** will open the first hyperlink in the result set.
+
