@@ -59,6 +59,19 @@ some = (list, test) ->
         return true if test(e)
     return false
 
+
+matches = (needle, haystack) ->
+    # needle is assumed to be lower case already
+    haystack = haystack.toLowerCase()
+    match = false
+
+    if needle[0] != "^"
+        match = haystack.indexOf(needle) != -1
+    else
+        idx = haystack.indexOf(needle.substring(1))
+        if idx != -1 and (idx==0 or haystack[idx-1]==" ")
+            match = true
+
 filter = (query) ->
     $(".entry, .section, .project").removeClass("hidden")
 
@@ -72,7 +85,7 @@ filter = (query) ->
         # If either the project is disabled by the user, or any of the project filters
         # "p:xxx" don't match, mark the project as disabled
         project_disabled = true  if not contains(active_project_uid, project.uid) or (query.projects.length > 0 and some(query.projects, (search) ->
-            project.project.toLowerCase().indexOf(search) == -1
+            not matches(search, project.project)
         ))
         section_idx = 0
 
@@ -82,7 +95,7 @@ filter = (query) ->
 
             # If the section filter "s:xxx" doesn't match, mark the section as disabled
             section_disabled = true  if query.sections.length > 0 and some(query.sections, (search) ->
-                project.sections[section_idx].section.toLowerCase().indexOf(search) == -1
+                not matches(search, project.sections[section_idx].section)
             )
             entry_idx = 0
 
@@ -93,11 +106,10 @@ filter = (query) ->
                 # Test each search regex, aborting if any fail to match
                 matched = false  if project_disabled or section_disabled or query.terms.length > 0 and some(query.terms, (exp) ->
                     not_found = if entry.term?
-                        entry.description.toLowerCase().indexOf(exp) is -1 and entry.term.toLowerCase().indexOf(exp) is -1
+                        not matches(exp, entry.description) and not matches(exp, entry.term)
                     else
-                        entry.description.toLowerCase().indexOf(exp) is -1
-                    not_found = not_found and project.project.toLowerCase().indexOf(exp) is -1
-                    not_found = not_found and project.sections[section_idx].section.toLowerCase().indexOf(exp) is -1
+                        not matches(exp, entry.description)
+                    not_found = not_found and not matches(exp, project.project) and not matches(exp, project.sections[section_idx].section)
                 )
                 if matched
                     entry_found = true

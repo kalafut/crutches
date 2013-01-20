@@ -15,6 +15,7 @@ Contents:
    templates
    contributing
    design
+   yaml
 
 
 
