@@ -10,6 +10,7 @@ import argparse
 
 import crutches.config as config
 import crutches.generate as generate
+import crutches.output as output
 import crutches.project as project
 import crutches.stress as stress
 import crutches.template as template
@@ -44,11 +45,11 @@ def main():
     cfg = config.Config(args.config)
 
     db = project.load_projects("projects", cfg)
-    html = template.parse_template(cfg.template + ".html", db)
+    html = template.parse_template(cfg.template, db)
 
-    with open("index.html", "w") as out:
-        out.write(html)
-        print ("index.html compiled ({size} bytes)".format(size=len(html)))
+    output.build(html, cfg.template)
+
+    print ("index.html compiled ({size} bytes)".format(size=len(html)))
 
 
 if __name__ == "__main__":

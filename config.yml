@@ -9,9 +9,9 @@ files_b: &b
 main:
     include: [ ]
     exclude: [ ]
-    template: tabular
+    template: default
 
 test:
     include: [ *a, *b, Perl ]
     exclude: [ ]
-    template: tabular
+    template: default

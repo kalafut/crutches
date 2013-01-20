@@ -7,6 +7,8 @@ class Config:
     asset_dir = "assets"
     template_dir = "templates"
     projects_dir = "projects"
+    build_dir = "build"
+    js_dir = "js"
 
     def __init__(self, user_cfg):
        self.load_config(user_cfg)

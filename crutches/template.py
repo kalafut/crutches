@@ -5,16 +5,8 @@ from os.path import join
 from config import Config
 
 def parse_template(name, data):
-    with open(join(Config.template_dir, name), "r") as f:
+    with open(join(Config.template_dir, name, name + ".html"), "r") as f:
         orig = f.read()
-
-    # Find external Javascript and load the contents
-    regex = re.compile(r"<\s*script.*?src\s*=\s*\"\s*(.*?)\s*\"\s*>.*?</script>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    orig = re.sub(regex, lambda x: "<script>{contents}</script>".format(contents=open(join(Config.asset_dir, x.groups()[0])).read()), orig)
-
-    # Find external CSS and load the contents
-    regex = re.compile("<\s*link.*?href\s*=\s*\"\s*(.*?)\s*\"\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
-    orig = re.sub(regex, lambda x: "<style>{contents}</style>".format(contents=open(join(Config.asset_dir, x.groups()[0])).read()), orig)
 
     # Extract template
     regex = re.compile(r"<\s*body\s*>(.*)<\s*/body\s*>",re.IGNORECASE|re.MULTILINE|re.DOTALL)
