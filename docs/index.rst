@@ -9,13 +9,14 @@ Welcome to the Crutches documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   config
-   templates
-   contributing
-   design
-   yaml
+    usage
+    config
+    templates
+    contributing
+    design
+    yaml
 
 
 
