@@ -25,6 +25,18 @@
             key("ctrl+2", function() {
                 window.open($($(".entry:not(.hidden) a")[1]).attr("href"));
             });
+            $("#project_selection_show_hide").on("click", function() {
+                $("#project_selection").toggle();
+            });
+            $("#prj_sel_all").on("click", function() {
+                $(".project_active").prop("checked",true);
+                Crutch.filter();
+            });
+            $("#prj_sel_none").on("click", function() {
+                $(".project_active").prop("checked",false);
+                Crutch.filter();
+            });
+
         });
         Crutch.render = function(template, data) {
             return Handlebars.compile(template)(data);
@@ -34,12 +46,16 @@
 </head>
     <body>
         <div style="width:80%; margin:20px;">
-        <div style="display:none">
+        <input id="search" type="text"/>
+        <button id="project_selection_show_hide">Show/Hide Projects</button>
+        <div id="project_selection" style="display:none">
             {{#each projects}}
             <br><input class="project_active" type="checkbox" data-uid="{{this.uid}}" checked="checked" />{{this.project}}
             {{/each}}
+            <br>
+            <button id="prj_sel_all">All</button>
+            <button id="prj_sel_none">None</button>
         </div>
-        <input id="search" type="text"/>
         <div id="main">
             {{#each projects}} <h1 class="project" id="{{this.uid}}">{{this.project}}</h1>
                 {{#if this.description}}
