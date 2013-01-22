@@ -11,6 +11,7 @@ body {
 }
 pre {
     font-family: 'Ubuntu Mono', monospace;
+    margin: 0px;
     }
 
 table
