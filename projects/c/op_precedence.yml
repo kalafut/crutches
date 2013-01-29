@@ -2,7 +2,7 @@ section: Operator precedence
 url: https://docs.djangoproject.com/en/1.4/ref/models/fields/#django.db.models.{entry}
 sort: fixed
 entries:
-    - [1                  Scope resolution                     Left-to-right]
+    - ["``1   ::               Scope resolution                     Left-to-right``"]
     -
       - |
         2   ++               Suffix increment

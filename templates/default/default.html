@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="default.css">
     <script src="keymaster.min.js"></script>
     <script src="zepto.min.js"></script>
@@ -76,9 +76,9 @@
                             {{this.term}}
                             {{/if}}
                         </td>
-                        <td>{{this.description}}</td>
+                        <td>{{{this.description}}}</td>
                         {{else}}
-                        <td colspan="2">{{this.description}}</td>
+                        <td colspan="2">{{{this.description}}}</td>
                         {{/if}}
                     </tr>
                     {{/each}}

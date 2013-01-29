@@ -112,15 +112,13 @@ def escape(raw):
         out = "<pre>{}</pre>".format(raw)
     else:
         literal = re.compile(r"``(.+?)``", re.MULTILINE|re.DOTALL)
-        em = re.compile(r"([_*])(.+?)\1", re.MULTILINE|re.DOTALL)
-        strong = re.compile(r"(__|\*\*)(.+?)\1", re.MULTILINE|re.DOTALL)
+        em = re.compile(r"\*(.+?)\*", re.MULTILINE|re.DOTALL)
+        strong = re.compile(r"\*\*(.+?)\*\*", re.MULTILINE|re.DOTALL)
 
         out = cgi.escape(raw)
 
-        #strong_sub = re.sub(strong, r"<strong>\2</strong>", raw)
-        #em_sub = re.sub(em, r"<em>\2</em>", strong_sub)
-        #code_sub = re.sub(code, r"<code>\1</code>", em_sub)
-
+        out = re.sub(strong, r"<strong>\1</strong>", out)
+        out = re.sub(em, r"<em>\1</em>", out)
         out = re.sub(literal, r"<pre>\1</pre>", out)
 
     return out
