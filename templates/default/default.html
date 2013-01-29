@@ -57,32 +57,38 @@
             <button id="prj_sel_none">None</button>
         </div>
         <div id="main">
-            {{#each projects}} <h1 class="project" id="{{this.uid}}">{{this.project}}</h1>
-                {{#if this.description}}
-                   {{this.description}}
-                {{/if}}
-                {{#each sections}}<h3 class="section" id="{{this.uid}}"> {{this.section}}</h3>
-                {{#if this.description}}
-                   {{this.description}}
-                {{/if}}
-                <table>
-                    {{#each entries}}
-                    <tr class="entry" id="{{this.uid}}">
-                        {{#if this.term}}
-                        <td>
-                            {{#if this.entry_url }}
-                            <a href="{{this.entry_url}}" target="detail_pg">{{this.term}}</a>
+            {{#each projects}}
+                <div class="project" id="{{this.uid}}">
+                    <h1>{{this.project}}</h1>
+                    {{#if this.description}}
+                       {{this.description}}
+                    {{/if}}
+                </div>
+                {{#each sections}}
+                <div class="section" id="{{this.uid}}">
+                    <h3> {{this.section}}</h3>
+                    {{#if this.description}}
+                       {{this.description}}
+                    {{/if}}
+                    <table>
+                        {{#each entries}}
+                        <tr class="entry" id="{{this.uid}}">
+                            {{#if this.term}}
+                            <td>
+                                {{#if this.entry_url }}
+                                <a href="{{this.entry_url}}" target="detail_pg">{{this.term}}</a>
+                                {{else}}
+                                {{this.term}}
+                                {{/if}}
+                            </td>
+                            <td>{{{this.description}}}</td>
                             {{else}}
-                            {{this.term}}
+                            <td colspan="2">{{{this.description}}}</td>
                             {{/if}}
-                        </td>
-                        <td>{{{this.description}}}</td>
-                        {{else}}
-                        <td colspan="2">{{{this.description}}}</td>
-                        {{/if}}
-                    </tr>
-                    {{/each}}
-                </table>
+                        </tr>
+                        {{/each}}
+                    </table>
+            </div>
 
                 {{/each}}
             {{/each}}
