@@ -71,14 +71,14 @@
                         {{#if this.term}}
                         <td>
                             {{#if this.entry_url }}
-                            <a href="{{this.entry_url}}" target="detail_pg">{{{this.term}}}</a>
+                            <a href="{{this.entry_url}}" target="detail_pg">{{this.term}}</a>
                             {{else}}
-                            {{{this.term}}}
+                            {{this.term}}
                             {{/if}}
                         </td>
-                        <td>{{{this.description}}}</td>
+                        <td>{{this.description}}</td>
                         {{else}}
-                        <td colspan="2">{{{this.description}}}</td>
+                        <td colspan="2">{{this.description}}</td>
                         {{/if}}
                     </tr>
                     {{/each}}
