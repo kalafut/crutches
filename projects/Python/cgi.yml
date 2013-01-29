@@ -1,0 +1,5 @@
+section: cgi
+description:
+url: "http://docs.python.org/2/library/cgi.html#cgi.{entry}"
+entries:
+    - [escape, "Convert the characters '&', '<' and '>' to HTML-safe sequences. See also quoteattr() in xml.sax.saxutils."]

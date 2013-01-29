@@ -1,4 +1,6 @@
+import cgi
 import os
+import re
 import yaml
 
 import template
@@ -80,11 +82,11 @@ def load_sections(filename):
                     if len(entry) > 3 or (len(entry) == 3 and not type(entry[2]) == dict):
                         exit("Invalid entry declaration in %s/%s: " % (project, content["section"])  + repr(entry))
 
-                    #TODO this is not correctly handling just a description plus options
+                    # TODO this is not correctly handling just a description plus options
                     if len(entry) == 1:
-                        new_entry = { "description": entry[0], "uid": util.next_uid() }
+                        new_entry = { "description": escape(entry[0]), "uid": util.next_uid() }
                     elif len(entry) >= 2:
-                        new_entry = { "term": entry[0], "description": entry[1], "uid": util.next_uid() }
+                        new_entry = { "term": escape(entry[0]), "description": escape(entry[1]), "uid": util.next_uid() }
 
                     if len(entry) > ENTRY_OPT:
                         new_entry["options"] = entry[ENTRY_OPT]
@@ -104,3 +106,21 @@ def list_projects(search = ""):
         path, desc = project["path"], project["description"]
         if path.lower().find(search) >= 0 or desc and desc.lower().find(search) >= 0:
             print("{:<50}{:}".format(path, desc or ""))
+
+def escape(raw):
+    if raw.find("\n") != -1:
+        out = "<pre>{}</pre>".format(raw)
+    else:
+        literal = re.compile(r"``(.+?)``", re.MULTILINE|re.DOTALL)
+        em = re.compile(r"([_*])(.+?)\1", re.MULTILINE|re.DOTALL)
+        strong = re.compile(r"(__|\*\*)(.+?)\1", re.MULTILINE|re.DOTALL)
+
+        out = cgi.escape(raw)
+
+        #strong_sub = re.sub(strong, r"<strong>\2</strong>", raw)
+        #em_sub = re.sub(em, r"<em>\2</em>", strong_sub)
+        #code_sub = re.sub(code, r"<code>\1</code>", em_sub)
+
+        out = re.sub(literal, r"<pre>\1</pre>", out)
+
+    return out

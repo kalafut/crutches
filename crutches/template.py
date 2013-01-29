@@ -20,16 +20,6 @@ def parse_template(name, data):
 
     return new_templ
 
-def mini_markdown(raw):
-    em = re.compile(r"([_*])(.+?)\1", re.MULTILINE|re.DOTALL)
-    strong = re.compile(r"(__|\*\*)(.+?)\1", re.MULTILINE|re.DOTALL)
-    code = re.compile(r"`(.+?)`", re.MULTILINE|re.DOTALL)
-
-    strong_sub = re.sub(strong, r"<strong>\2</strong>", raw)
-    em_sub = re.sub(em, r"<em>\2</em>", strong_sub)
-    code_sub = re.sub(code, r"<code>\1</code>", em_sub)
-
-    return code_sub
 
 
 def prepare_entry_url(entry, section_url):
