@@ -1,9 +1,9 @@
 section: string.h
 sort: fixed
 entries:
-    - ["memchr(s, c, n)", "Find first occurence of _c_ in _s, within the first _n_ characters."]
-    - ["memcmp(s, t, n)", "Compare the first _n_ characters of _s_ and _t_."]
+    - ["memchr(s, c, n)", "Find first occurence of *c* in *s*, within the first *n* characters."]
+    - ["memcmp(s, t, n)", "Compare the first *n* characters of *s* and *t*."]
     - ["memcpy(dst, src, n)", "Copy n characters from src to dst."]
     - ["memmove(dst, src, n)", "Copy n characters from src to dst. Handles overlapping regions."]
-    - ["memset(s, c, n)", "Set the first _n_ characters of _s_ to _c_."]
-    - ["strncpy(dst, src)", "Copy _src_ to _dst_."]
+    - ["memset(s, c, n)", "Set the first *n* characters of *s* to *c*."]
+    - ["strncpy(dst, src)", "Copy *src* to *dst*."]

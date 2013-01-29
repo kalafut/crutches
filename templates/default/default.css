@@ -2,13 +2,19 @@
 h1 {
     color: #eee;
     background-color: rgb(49, 78, 78);
+
     border-radius: 6px;
     padding: 2px 6px;
 }
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #eeeeee;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    abackground-color: #eeeeee;
+    background-image: url("fabric_1.png");
 }
+pre {
+    font-family: 'Ubuntu Mono', monospace;
+    margin: 0px;
+    }
 
 table
 {

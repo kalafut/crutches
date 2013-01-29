@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
 <head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="default.css">
     <script src="keymaster.min.js"></script>
     <script src="zepto.min.js"></script>
@@ -23,6 +25,18 @@
             key("ctrl+2", function() {
                 window.open($($(".entry:not(.hidden) a")[1]).attr("href"));
             });
+            $("#project_selection_show_hide").on("click", function() {
+                $("#project_selection").toggle();
+            });
+            $("#prj_sel_all").on("click", function() {
+                $(".project_active").prop("checked",true);
+                Crutch.filter();
+            });
+            $("#prj_sel_none").on("click", function() {
+                $(".project_active").prop("checked",false);
+                Crutch.filter();
+            });
+
         });
         Crutch.render = function(template, data) {
             return Handlebars.compile(template)(data);
@@ -32,39 +46,49 @@
 </head>
     <body>
         <div style="width:80%; margin:20px;">
-        <div style="display:none">
+        <input id="search" type="text"/>
+        <button id="project_selection_show_hide">Show/Hide Projects</button>
+        <div id="project_selection" style="display:none">
             {{#each projects}}
             <br><input class="project_active" type="checkbox" data-uid="{{this.uid}}" checked="checked" />{{this.project}}
             {{/each}}
+            <br>
+            <button id="prj_sel_all">All</button>
+            <button id="prj_sel_none">None</button>
         </div>
-        <input id="search" type="text"/>
         <div id="main">
-            {{#each projects}} <h1 class="project" id="{{this.uid}}">{{this.project}}</h1>
-                {{#if this.description}}
-                   {{this.description}}
-                {{/if}}
-                {{#each sections}}<h3 class="section" id="{{this.uid}}"> {{this.section}}</h3>
-                {{#if this.description}}
-                   {{this.description}}
-                {{/if}}
-                <table>
-                    {{#each entries}}
-                    <tr class="entry" id="{{this.uid}}">
-                        {{#if this.term}}
-                        <td>
-                            {{#if this.entry_url }}
-                            <a href="{{this.entry_url}}" target="detail_pg">{{{this.term}}}</a>
+            {{#each projects}}
+                <div class="project" id="{{this.uid}}">
+                    <h1>{{this.project}}</h1>
+                    {{#if this.description}}
+                       {{this.description}}
+                    {{/if}}
+                </div>
+                {{#each sections}}
+                <div class="section" id="{{this.uid}}">
+                    <h3> {{this.section}}</h3>
+                    {{#if this.description}}
+                       {{this.description}}
+                    {{/if}}
+                    <table>
+                        {{#each entries}}
+                        <tr class="entry" id="{{this.uid}}">
+                            {{#if this.term}}
+                            <td>
+                                {{#if this.entry_url }}
+                                <a href="{{this.entry_url}}" target="detail_pg">{{this.term}}</a>
+                                {{else}}
+                                {{this.term}}
+                                {{/if}}
+                            </td>
+                            <td>{{{this.description}}}</td>
                             {{else}}
-                            {{{this.term}}}
+                            <td colspan="2">{{{this.description}}}</td>
                             {{/if}}
-                        </td>
-                        <td>{{{this.description}}}</td>
-                        {{else}}
-                        <td colspan="2">{{{this.description}}}</td>
-                        {{/if}}
-                    </tr>
-                    {{/each}}
-                </table>
+                        </tr>
+                        {{/each}}
+                    </table>
+            </div>
 
                 {{/each}}
             {{/each}}
