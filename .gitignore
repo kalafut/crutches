@@ -4,4 +4,6 @@ index.html
 *.orig
 *.swn
 docs/_build/
+docs/_static/
 build/
+private/
