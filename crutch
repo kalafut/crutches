@@ -44,7 +44,7 @@ def main():
 
     cfg = config.Config(args.config)
 
-    db = project.load_projects("projects", cfg)
+    db = project.load_project_trees(["projects", cfg.private], cfg)
     html = template.parse_template(cfg.template, db)
 
     output.build(html, cfg.template)

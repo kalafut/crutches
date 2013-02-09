@@ -14,9 +14,17 @@ def parse_module(file, project, db):
     with open(file, "r") as input:
         module = yaml.load(input)
 
-def load_projects(path, config = None, project_path = [], db = {"projects":[]}):
+
+def load_project_trees(paths, config = None):
+    db = {"projects":[]}
+    for path in paths:
+        db = load_project_tree(path, config=config, db=db)
+
+    return db
+
+def load_project_tree(path, config = None, project_path = [], db = {"projects":[]}):
     """
-    Traverse the projects tree, identify and loading matching projects.
+    Traverse a project tree, identify and loading matching projects.
     """
 
     # Check current folder
@@ -34,10 +42,13 @@ def load_projects(path, config = None, project_path = [], db = {"projects":[]}):
         if len(new_project["sections"]) > 0:
             db["projects"].append(new_project)
 
-    for name in os.listdir(path):
-        next_path = os.path.join(path,name)
-        if os.path.isdir(next_path):
-            load_projects(next_path, config, project_path, db)
+    if os.path.exists(path):
+        for name in os.listdir(path):
+            next_path = os.path.join(path,name)
+            if os.path.isdir(next_path):
+                load_project_tree(next_path, config, project_path, db)
+    else:
+        print("Warning: project path %s does not exist" % path)
 
     if prj_desc:
         project_path.pop()

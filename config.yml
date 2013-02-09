@@ -5,10 +5,10 @@ files_b: &b
     - *a
     - Unix
 
-
 main:
     include: [ ]
-    exclude: [ ]
+    exclude: [ CSS ]
+    private:
     template: default
 
 test:

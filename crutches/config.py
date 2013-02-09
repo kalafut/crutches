@@ -3,6 +3,8 @@ import yaml
 
 import util
 
+DEFAULT_PRIVATE_DIR = "private"
+
 class Config:
     asset_dir = "assets"
     template_dir = "templates"
@@ -20,6 +22,11 @@ class Config:
                 self.template = cfg["template"]
                 self.include = cfg.get("include", [])
                 self.exclude = cfg.get("exclude", [])
+                self.private = cfg.get("private", DEFAULT_PRIVATE_DIR)
+                if not self.private:
+                    self.private = DEFAULT_PRIVATE_DIR
+
+
             except KeyError as e:
                 exit("Error: required key {} missing in configuration.".format(e))
 
