@@ -27,12 +27,12 @@ def copy_js(html=None, template_dir=None, js_dir=Config.js_dir, target_dir=Confi
             exit("Error: {} not found".format(script))
 
 
-def build(html, template_name):
+def build(html, cfg):
     create_build_dir()
-    template_dir = os.path.join(Config.template_dir, template_name)
+    template_dir = os.path.join(Config.template_dir, cfg.template)
     copy_js(html=html, template_dir=template_dir)
 
-    with open(os.path.join(Config.build_dir, template_name + ".html"), "w") as out:
+    with open(os.path.join(Config.build_dir, cfg.name + ".html"), "w") as out:
         out.write(html)
 
 

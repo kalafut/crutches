@@ -13,6 +13,7 @@ class Config:
     js_dir = "js"
 
     def __init__(self, user_cfg):
+       self.name = user_cfg
        self.load_config(user_cfg)
 
     def load_config(self, config):

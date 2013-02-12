@@ -47,7 +47,7 @@ def main():
     db = project.load_project_trees(["projects", cfg.private], cfg)
     html = template.parse_template(cfg.template, db)
 
-    output.build(html, cfg.template)
+    output.build(html, cfg)
 
     print ("index.html compiled ({size} bytes)".format(size=len(html)))
 
