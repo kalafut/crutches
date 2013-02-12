@@ -11,6 +11,12 @@ main:
     private:
     template: default
 
+index:
+    include: [ ]
+    exclude: [ ]
+    private:
+    template: mono
+
 test:
     include: [ *a, *b, Perl ]
     exclude: [ ]

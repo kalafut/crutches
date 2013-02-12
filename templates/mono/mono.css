@@ -1,0 +1,8 @@
+.hidden { display: none; }
+body {
+    font-family: monospace;
+}
+
+.section {
+    text-indent: 2em;
+}

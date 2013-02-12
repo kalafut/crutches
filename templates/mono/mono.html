@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="mono.css">
+    <script src="keymaster.min.js"></script>
+    <script src="zepto.min.js"></script>
+    <script src="handlebars.min.js"></script>
+    <script src="crutch.js"></script>
+    <script>
+        $(document).ready(function() {
+            key("alt+a, ⌘+a", function() {
+                $(".project_active").prop("checked",true);
+                Crutch.filter();
+            });
+            key("alt+n, ⌘+n", function() {
+                $(".project_active").prop("checked",false);
+                Crutch.filter();
+            });
+            key("ctrl+1, enter", function() {
+                window.open($(".entry:not(.hidden) a").attr("href"), "_self");// "detail_pg");
+            });
+            // To be fixed and extended...
+            key("ctrl+2", function() {
+                window.open($($(".entry:not(.hidden) a")[1]).attr("href"));
+            });
+            $("#project_selection_show_hide").on("click", function() {
+                $("#project_selection").toggle();
+            });
+            $("#prj_sel_all").on("click", function() {
+                $(".project_active").prop("checked",true);
+                Crutch.filter();
+            });
+            $("#prj_sel_none").on("click", function() {
+                $(".project_active").prop("checked",false);
+                Crutch.filter();
+            });
+
+        });
+        Crutch.render = function(template, data) {
+            return Handlebars.compile(template)(data);
+        };
+    </script>
+
+</head>
+    <body>
+        <div style="width:80%; margin:20px;">
+        <input id="search" type="text"/>
+        <button id="project_selection_show_hide">Show/Hide Projects</button>
+        <div id="project_selection" style="display:none">
+            {{#each projects}}
+            <br><input class="project_active" type="checkbox" data-uid="{{this.uid}}" checked="checked" />{{this.project}}
+            {{/each}}
+            <br>
+            <button id="prj_sel_all">All</button>
+            <button id="prj_sel_none">None</button>
+        </div>
+        <div id="main">
+            {{#each projects}}
+                <div class="project" id="{{this.uid}}">
+                    {{this.project}}
+                </div>
+                {{#each sections}}
+                <div class="section" id="{{this.uid}}">
+                    {{this.section}}
+                    {{#if this.description}}
+                       {{this.description}}
+                    {{/if}}
+                </div>
+
+                {{/each}}
+            {{/each}}
+        </div>
+    </div>
+
+    </body>
+</html>
+
