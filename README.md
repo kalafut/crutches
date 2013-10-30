@@ -1,4 +1,5 @@
-# Note: this project and page are incomplete and under construction right now.
+**Note: this project is on hold indefinitely. Discovering the excellent [Dash](http://kapeli.com/dash) app for OSX has greatly dampened my
+enthusiasm to continue working on it.**
 
 # Crutches
 
